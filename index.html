@@ -3,26 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Equestrian Pro | Next-Gen Tracker</title>
-  <!-- Google Fonts: Cairo for sleek Arabic typography -->
+  <title>تتبع الخيل - DR.S</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <!-- Lucide Icons for crisp, professional iconography -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
-      --bg-base: #090a0f;
-      --surface: #131622;
-      --surface-glass: rgba(19, 22, 34, 0.7);
+      --bg-base: #0b0f15;
+      --surface: #121821;
+      --surface-card: #161e2b;
       --border: rgba(255, 255, 255, 0.08);
-      --primary: #6366f1;
-      --primary-glow: rgba(99, 102, 241, 0.35);
-      --accent: #10b981;
-      --danger: #ef4444;
+      --primary: #d4af37;
       --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --radius-lg: 24px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
+      --text-muted: #8c9cb6;
+      --radius-lg: 32px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -30,265 +25,525 @@
     body { 
       font-family: 'Cairo', sans-serif; 
       background: var(--bg-base); 
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
       margin: 0; 
-      padding: 20px; 
+      padding: 0 0 100px 0; 
       text-align: center; 
       color: var(--text-main); 
       min-height: 100vh;
     }
 
     .app-container { 
-      background: var(--surface-glass); 
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg); 
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
-      padding: 24px; 
-      max-width: 480px; 
+      max-width: 460px; 
       margin: 0 auto; 
+      padding: 16px;
+      position: relative;
     }
 
-    /* Header & Status */
-    .app-header {
+    /* Top Hero Header Layout */
+    .hero-card {
+      position: relative;
+      width: 100%;
+      height: 350px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 14px;
+      background: #000;
+      border: 1px solid var(--border);
+    }
+    .hero-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(11,15,21,0.15) 20%, rgba(11,15,21,0.96) 85%);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: right;
+    }
+    .top-nav-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
     }
-    .app-title { 
-      font-size: 20px; 
-      color: var(--text-main); 
-      margin: 0; 
-      font-weight: 900; 
+    .icon-btn {
+      background: rgba(18, 24, 33, 0.75);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+      backdrop-filter: blur(12px);
     }
-    .app-title i { color: var(--primary); }
-
     .status-badge { 
       font-size: 12px; 
       font-weight: 600; 
       color: var(--text-muted); 
-      padding: 6px 12px; 
-      background: rgba(255, 255, 255, 0.03); 
+      padding: 6px 16px; 
+      background: rgba(18, 24, 33, 0.75); 
       border: 1px solid var(--border); 
       border-radius: 20px; 
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      backdrop-filter: blur(12px);
     }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); display: inline-block; }
-    .status-dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block; }
+    .status-dot.active { background: #10b981; box-shadow: 0 0 8px #10b981; }
 
-    /* Buttons */
-    .btn { 
-      width: 100%;
-      padding: 14px; 
-      font-size: 15px; 
-      font-weight: 700; 
-      font-family: 'Cairo', sans-serif;
-      border: none; 
-      border-radius: var(--radius-md); 
-      cursor: pointer; 
-      color: white; 
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+    .hero-main-content {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .hero-title-text h1 {
+      font-size: 30px;
+      font-weight: 900;
+      margin: 0;
+      color: #fff;
+      line-height: 1.15;
+    }
+    
+    .dr-badge-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .dr-brand-tag {
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff 20%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      border-right: 2px solid var(--primary);
+      padding-right: 8px;
+    }
+
+    .hero-title-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 4px 0 0 0;
+    }
+    .logo-badge {
+      width: 54px;
+      height: 54px;
+      background: rgba(18, 24, 33, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      color: var(--primary);
+      flex-shrink: 0;
     }
-    .btn-conn { 
-      background: rgba(255, 255, 255, 0.04); 
+
+    /* Top Stats Grid */
+    .top-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mini-stat-card {
+      background: var(--surface);
       border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      text-align: right;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mini-stat-info .label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
+    .mini-stat-info .val { font-size: 20px; font-weight: 800; color: #fff; }
+    .mini-stat-info .unit { font-size: 10px; color: var(--text-muted); }
+    .mini-stat-icon { color: var(--primary); background: rgba(255,255,255,0.03); width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+
+    /* Map Box Card */
+    .map-box-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 14px;
+      text-align: right;
+    }
+    .map-header-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .canvas-container { 
+      position: relative; 
+      width: 100%; 
+      height: 190px;
+      background: #080c10; 
+      border: 1px solid var(--border); 
+      border-radius: 14px; 
+      overflow: hidden; 
+      cursor: grab; 
+      touch-action: none;
+      user-select: none; 
+    }
+    .canvas-background-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .canvas-container:active { cursor: grabbing; }
+    #pathCanvas { width: 100%; height: 100%; display: block; position: relative; z-index: 2; }
+    
+    .map-controls-abs {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      z-index: 5;
+    }
+    .btn-reset-map {
+      background: rgba(18, 24, 33, 0.85);
       color: var(--text-main);
-      margin-bottom: 16px; 
-    }
-    .btn-conn:hover { background: rgba(255, 255, 255, 0.08); }
-
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-    .btn-start { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25); }
-    .btn-stop { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.25); }
-    .btn:active { transform: scale(0.97); }
-
-    /* Speedometer Dashboard */
-    .speedometer-card { 
-      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
       border: 1px solid var(--border);
-      border-radius: 50%; 
-      width: 190px; 
-      height: 190px; 
-      margin: 10px auto 20px auto; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-      align-items: center; 
-      position: relative;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
     }
-    .speedometer-card::after {
+
+    /* Tip strip */
+    .tip-strip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* History Strip */
+    .history-strip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .history-strip-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    /* Main Dashboard Control Card */
+    .main-control-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+    .main-stats-split {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .side-stat-box {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: right;
+      position: relative;
+      overflow: hidden;
+      height: 105px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .side-stat-box img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 75px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .side-stat-box .h { font-size: 11px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px; z-index: 2; }
+    .side-stat-box .v { font-size: 20px; font-weight: 800; color: #fff; z-index: 2; }
+
+    /* Speedometer Circle */
+    .speedometer-circle {
+      width: 175px;
+      height: 175px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 75%);
+      border: 2px solid var(--border);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+    }
+    .speedometer-circle::before {
       content: '';
       position: absolute;
       inset: -2px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), transparent);
-      z-index: -1;
-      opacity: 0.3;
+      border: 2px solid transparent;
+      border-top-color: var(--primary);
+      animation: spinGlow 4s linear infinite;
     }
-    .speed-val { font-size: 52px; font-weight: 900; line-height: 1; color: #fff; letter-spacing: -1px; }
-    .speed-unit { font-size: 12px; margin-top: 6px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+    @keyframes spinGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .speed-horse-icon { color: var(--primary); margin-bottom: 2px; }
+    .speed-main-val { font-size: 42px; font-weight: 900; line-height: 1; color: #fff; }
+    .speed-main-unit { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
 
-    /* Stats Grid */
-    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-    .stat-box { 
-      background: rgba(255, 255, 255, 0.02); 
-      padding: 14px; 
-      border-radius: var(--radius-sm); 
-      border: 1px solid var(--border); 
-      text-align: right;
+    /* Buttons Row */
+    .action-btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    .stat-box-header { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
-    .stat-box-header i { width: 14px; height: 14px; color: var(--primary); }
-    .stat-box p { margin: 0; font-size: 20px; font-weight: 800; color: var(--text-main); }
-
-    /* Meta Info */
-    .meta-bar {
+    .btn-custom {
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      cursor: pointer;
       display: flex;
-      justify-content: space-between;
-      font-size: 12px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      transition: 0.2s;
+    }
+    .btn-start-pro { background: linear-gradient(135deg, #d4af37, #b3922b); color: #0b0f15; border: none; font-weight: 900; }
+    .btn-stop-pro { background: var(--surface-card); color: #fca5a5; }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(18, 24, 33, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 10px 16px 10px;
+      z-index: 1000;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .nav-item {
+      background: transparent;
+      border: none;
       color: var(--text-muted);
-      margin-bottom: 14px;
-      padding: 0 4px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 14px;
+      transition: 0.2s;
     }
-
-    /* Canvas Map */
-    .canvas-container { 
-      position: relative; 
-      width: 100%; 
-      background: #050608; 
-      border: 1px solid var(--border); 
-      border-radius: var(--radius-md); 
-      overflow: hidden; 
-      cursor: grab; 
-      user-select: none; 
+    .nav-item.active {
+      background: var(--surface-card);
+      color: var(--text-main);
+      border: 1px solid var(--border);
     }
-    .canvas-container:active { cursor: grabbing; }
-    #pathCanvas { width: 100%; display: block; touch-action: none; }
-    .canvas-label { position: absolute; top: 10px; right: 12px; color: var(--text-muted); font-size: 11px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 8px; pointer-events: none; border: 1px solid var(--border); }
-    .clear-btn { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.06); color: var(--text-main); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 600; transition: 0.2s; }
-    .clear-btn:hover { background: rgba(255,255,255,0.12); }
+    .nav-item.active i { color: var(--primary); }
 
-    /* Interactive Box & Reports */
-    .panel-box { display: none; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-sm); margin-top: 16px; text-align: right; }
-    .btn-action-group { display: flex; gap: 8px; margin-top: 12px; }
-    .map-select-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 700; transition: 0.2s; }
-    .map-select-btn.primary { background: var(--primary); border-color: transparent; }
-    .map-select-btn.danger { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; }
-
-    /* History */
-    .history-section { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 18px; text-align: right; }
-    .history-title { font-size: 14px; color: var(--text-main); font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-    .history-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; font-size: 12px; }
-    .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .history-title-input { font-weight: 700; font-size: 13px; border: 1px solid transparent; background: transparent; color: var(--text-main); width: 60%; padding: 2px 4px; border-radius: 4px; font-family: 'Cairo', sans-serif; }
-    .history-title-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.04); outline: none; }
-    .history-btns { display: flex; gap: 6px; }
-    .h-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 600; }
-    .h-btn.del { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    .panel-box { display: none; background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md); margin-top: 12px; text-align: right; }
+    .history-card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; text-align: right; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  <div class="app-header">
-    <h1 class="app-title"><i data-lucide="activity"></i> تتبع الخيل الاحترافي</h1>
-    <div class="status-badge">
-      <span class="status-dot" id="statusDot"></span>
-      <span id="statusText">غير متصل</span>
+
+  <!-- Top Hero Header with your custom image link -->
+  <div class="hero-card">
+    <img src="https://iili.io/CNtFtxS.jpg" alt="Custom Horse Track Image">
+    <div class="hero-overlay">
+      <div class="top-nav-row">
+        <div class="icon-btn" onclick="alert('لا توجد إشعارات جديدة')"><i data-lucide="bell" style="width: 20px; height: 20px;"></i></div>
+        <div class="status-badge" onclick="connectBLE()" style="cursor: pointer;">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">غير متصل</span>
+        </div>
+      </div>
+      <div class="hero-main-content">
+        <div class="hero-title-text">
+          <div class="dr-badge-wrapper">
+            <span class="dr-brand-tag">DR.S</span>
+          </div>
+          <h1>تتبع الخيل</h1>
+          <p>الاتصال بجهاز البلوتوث (ESP32)</p>
+        </div>
+        <div class="logo-badge">
+          <i data-lucide="shield" style="width: 26px; height: 26px;"></i>
+        </div>
+      </div>
     </div>
   </div>
 
-  <button class="btn btn-conn" onclick="connectBLE()">
-    <i data-lucide="bluetooth" style="width: 18px; height: 18px;"></i>
-    الاتصال بجهاز البلوتوث (ESP32)
-  </button>
-  
-  <div class="meta-bar">
-    <span id="gpsAccuracy">دقة GPS: --</span>
-    <span id="startTimeDisplay">الانطلاق: --:--:--</span>
-  </div>
-  
-  <div class="btn-group">
-    <button class="btn btn-start" onclick="startTrip()">
-      <i data-lucide="play" style="width: 18px; height: 18px;"></i> انطلاق
-    </button>
-    <button class="btn btn-stop" onclick="stopTrip()">
-      <i data-lucide="square" style="width: 18px; height: 18px;"></i> إيقاف
-    </button>
-  </div>
-
-  <div class="speedometer-card">
-    <span class="speed-val" id="currSpeed">0.0</span>
-    <span class="speed-unit">كم / س</span>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-box">
-      <div class="stat-box-header"><i data-lucide="map-pin"></i> المسافة</div>
-      <p id="totalDist">0 م</p>
+  <!-- Top Mini Stats Grid -->
+  <div class="top-stats-grid">
+    <div class="mini-stat-card">
+      <div class="mini-stat-icon"><i data-lucide="zap" style="width: 20px; height: 20px;"></i></div>
+      <div class="mini-stat-info">
+        <div class="label">أعلى سرعة</div>
+        <div class="val" id="topSpeed">0.0</div>
+        <div class="unit">كم / س</div>
+      </div>
     </div>
-    <div class="stat-box">
-      <div class="stat-box-header"><i data-lucide="clock"></i> الزمن</div>
-      <p id="timeElapsed" style="color: var(--accent);">00:00</p>
-    </div>
-    <div class="stat-box">
-      <div class="stat-box-header"><i data-lucide="zap"></i> أعلى سرعة</div>
-      <p id="topSpeed" style="color: #f59e0b;">0.0</p>
-    </div>
-    <div class="stat-box">
-      <div class="stat-box-header"><i data-lucide="trending-up"></i> المتوسط</div>
-      <p id="avgSpeed" style="color: var(--primary);">0.0</p>
+    <div class="mini-stat-card">
+      <div class="mini-stat-icon"><i data-lucide="trending-up" style="width: 20px; height: 20px;"></i></div>
+      <div class="mini-stat-info">
+        <div class="label">المتوسط</div>
+        <div class="val" id="avgSpeed">0.0</div>
+        <div class="unit">كم / س</div>
+      </div>
     </div>
   </div>
 
-  <div class="canvas-container" id="canvasContainer">
-    <canvas id="pathCanvas" width="420" height="260"></canvas>
-    <div class="canvas-label">خريطة المسار الحي</div>
-    <button class="clear-btn" onclick="resetMapView()">إعادة الضبط</button>
-  </div>
-  <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">💡 اسحب للتحريك السلس، وعجلة الماوس للتكبير والتصغير.</p>
-  
-  <div id="pointInfoBox" class="panel-box">
-    <div id="pointDetailsText" style="font-size: 13px; color: var(--text-main); font-weight: 600; line-height: 1.6;"></div>
-    <div class="btn-action-group">
-      <button class="map-select-btn primary" onclick="setAsStartA()">تعيين كبداية (A)</button>
-      <button class="map-select-btn danger" onclick="setAsEndB()">تعيين كنهاية (B)</button>
+  <!-- Map Box -->
+  <div class="map-box-card">
+    <div class="map-header-label">
+      <span>خريطة المسار الحالي</span>
+      <span id="gpsAccuracy" style="font-size: 10px; color: var(--text-muted);">دقة GPS: --</span>
+    </div>
+    <div class="canvas-container" id="canvasContainer">
+      <img src="https://iili.io/CNtFtxS.jpg" class="canvas-background-image" alt="Map BG">
+      <canvas id="pathCanvas" width="400" height="190"></canvas>
+      <div class="map-controls-abs">
+        <button class="btn-reset-map" onclick="resetMapView()"><i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i> إعادة الضبط</button>
+      </div>
     </div>
   </div>
-  
+
+  <!-- Tip Strip -->
+  <div class="tip-strip">
+    <span>اسحب للتحرك السلس، وعجلة الماوس للتكبير والتصغير.</span>
+    <i data-lucide="navigation" style="width: 16px; height: 16px; color: var(--primary);"></i>
+  </div>
+
+  <!-- History Strip -->
+  <div class="history-strip" onclick="toggleHistoryView()">
+    <div class="history-strip-title"><i data-lucide="archive" style="width: 18px; height: 18px; color: var(--primary);"></i> أرشيف الجولات المحفوظة</div>
+    <i data-lucide="chevron-left" style="width: 16px; height: 16px; color: var(--text-muted);"></i>
+  </div>
+
+  <div id="historyExpandPanel" class="panel-box">
+    <div id="historyContainer"><p style="font-size: 11px; color: var(--text-muted); text-align: center;">لا توجد جولات محفوظة حالياً.</p></div>
+  </div>
+
+  <!-- Main Speed & Controls Dashboard Card -->
+  <div class="main-control-card">
+    <div class="main-stats-split">
+      <div class="side-stat-box">
+        <div class="h"><i data-lucide="clock" style="width: 14px; height: 14px; color: var(--accent);"></i> الزمن</div>
+        <div class="v" id="timeElapsed" style="font-size: 16px; color: #34d399;">00:00</div>
+        <img src="https://iili.io/CNtFtxS.jpg" alt="Horse">
+      </div>
+
+      <div class="speedometer-circle">
+        <div class="speed-horse-icon"><i data-lucide="shield" style="width: 18px; height: 18px;"></i></div>
+        <div class="speed-main-val" id="currSpeed">0.0</div>
+        <div class="speed-main-unit">كم / س</div>
+      </div>
+
+      <div class="side-stat-box">
+        <div class="h"><i data-lucide="map-pin" style="width: 14px; height: 14px; color: var(--primary);"></i> المسافة</div>
+        <div class="v" id="totalDist" style="font-size: 16px;">0 م</div>
+        <img src="https://iili.io/CNtFtxS.jpg" alt="Horse">
+      </div>
+    </div>
+
+    <div class="action-btn-row">
+      <button class="btn-custom btn-stop-pro" onclick="stopTrip()">
+        <i data-lucide="square" style="width: 18px; height: 18px;"></i> إيقاف
+      </button>
+      <button class="btn-custom btn-start-pro" onclick="startTrip()">
+        <i data-lucide="play" style="width: 18px; height: 18px;"></i> انطلاق
+      </button>
+    </div>
+  </div>
+
+  <!-- Report Section Panel -->
   <div id="reportSection" class="panel-box" style="border-color: var(--primary);">
-    <div style="font-size: 15px; color: var(--primary); font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-      <i data-lucide="file-text" style="width: 18px; height: 18px;"></i> تقرير الجولة التحليلي
+    <div style="font-size: 14px; color: var(--primary); font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+      <i data-lucide="file-text" style="width: 16px; height: 16px;"></i> تقرير الجولة التحليلي
     </div>
-    <p id="summaryText" style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.8; color: var(--text-muted);"></p>
-    <div id="segmentResult" style="margin-top: 10px; font-size: 12px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: right; line-height: 1.8; display: none;"></div>
-    <button class="btn" style="background: var(--primary); margin-top: 12px;" onclick="saveCombinedReportImage()">
+    <p id="summaryText" style="font-size: 12px; margin: 0 0 10px 0; line-height: 1.6; color: var(--text-muted); text-align: right;"></p>
+    <button class="btn-custom btn-start-pro" style="width: 100%; margin-top: 10px;" onclick="saveCombinedReportImage()">
       <i data-lucide="download" style="width: 16px; height: 16px;"></i> تصدير التقرير كصورة فاخرة
     </button>
   </div>
 
-  <div class="history-section">
-    <div class="history-title"><i data-lucide="archive" style="width: 16px; height: 16px;"></i> أرشيف الجولات المحفوظة</div>
-    <div id="historyContainer"><p style="font-size: 12px; color: var(--text-muted); text-align: center;">لا توجد جولات محفوظة حالياً.</p></div>
-  </div>
+</div>
+
+<!-- Bottom Navigation Bar -->
+<div class="bottom-nav">
+  <button class="nav-item" onclick="alert('شاشة الإعدادات')">
+    <i data-lucide="settings" style="width: 20px; height: 20px;"></i>
+    الإعدادات
+  </button>
+  <button class="nav-item" onclick="toggleHistoryView()">
+    <i data-lucide="bar-chart-2" style="width: 20px; height: 20px;"></i>
+    الإحصائيات
+  </button>
+  <button class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    <i data-lucide="home" style="width: 20px; height: 20px;"></i>
+    الرئيسية
+  </button>
+  <button class="nav-item" onclick="toggleHistoryView()">
+    <i data-lucide="archive" style="width: 20px; height: 20px;"></i>
+    الأرشيف
+  </button>
 </div>
 
 <script>
-  // تفعيل الأيقونات الاحترافية
   lucide.createIcons();
 
   let bluetoothDevice, bleCharacteristic;
@@ -300,12 +555,11 @@
   let canvas = document.getElementById('pathCanvas');
   let ctx = canvas.getContext('2d');
   let renderedPoints = [];
-  let selectedPointForAction = null;
-  let pointAPoint = null, pointBPoint = null;
   let savedTrips = JSON.parse(localStorage.getItem('horse_trips_pro_history')) || [];
 
   let zoomScale = 1.0, panX = 0, panY = 0;
   let isDragging = false, startX = 0, startY = 0;
+  let pointers = new Map();
 
   const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const CHAR_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
@@ -326,7 +580,7 @@
       const server = await bluetoothDevice.gatt.connect();
       const service = await server.getPrimaryService(SERVICE_UUID);
       bleCharacteristic = await service.getCharacteristic(CHAR_UUID);
-      updateStatus("متصل بالبث", true);
+      updateStatus("متصل", true);
     } catch (error) {
       updateStatus("فشل الاتصال", false);
     }
@@ -336,7 +590,7 @@
     let ratio = window.devicePixelRatio || 1;
     let displayWidth = canvas.clientWidth;
     canvas.width = displayWidth * ratio;
-    canvas.height = 260 * ratio;
+    canvas.height = 190 * ratio;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     drawPath(tripLog);
   }
@@ -358,20 +612,14 @@
     return 6371000.0 * c;
   }
 
-  function resetMapView() {
-    zoomScale = 1.0; panX = 0; panY = 0;
-    drawPath(tripLog);
-  }
+  function resetMapView() { zoomScale = 1.0; panX = 0; panY = 0; drawPath(tripLog); }
 
   function drawPath(dataLog) {
-    let w = canvas.clientWidth, h = 260;
+    let w = canvas.clientWidth, h = 190;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#050608'; ctx.fillRect(0, 0, w, h);
     renderedPoints = [];
     
     if (!dataLog || dataLog.length === 0) {
-      ctx.fillStyle = '#94a3b8'; ctx.font = '13px Cairo, sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('في انتظار إشارات الأقمار الصناعية...', w / 2, h / 2);
       return;
     }
     
@@ -380,20 +628,14 @@
     let minX = Math.min(...pts.map(p => p.x)), maxX = Math.max(...pts.map(p => p.x));
     let minY = Math.min(...pts.map(p => p.y)), maxY = Math.max(...pts.map(p => p.y));
     let rangeX = Math.max(maxX - minX, 5), rangeY = Math.max(maxY - minY, 5);
-    let pad = 30;
+    let pad = 25;
     let baseScale = Math.min((w - pad * 2) / rangeX, (h - pad * 2) / rangeY);
     let scale = baseScale * zoomScale;
     
     let cx0 = w / 2 - ((minX + maxX) / 2) * scale + panX;
     let cy0 = h / 2 + ((minY + maxY) / 2) * scale + panY;
 
-    // شبكة خلفية دقيقة
-    ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = 1;
-    for (let gx = 0; gx < w; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
-    for (let gy = 0; gy < h; gy += 30) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
-
-    // خط المسار المتدرج الاحترافي
-    ctx.strokeStyle = '#6366f1'; ctx.lineWidth = Math.max(2, 3.5 * Math.min(zoomScale, 2.0)); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.strokeStyle = '#d4af37'; ctx.lineWidth = Math.max(2, 3 * Math.min(zoomScale, 2.0)); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     ctx.beginPath();
     pts.forEach((p, i) => {
       let cx = cx0 + p.x * scale, cy = cy0 - p.y * scale;
@@ -401,92 +643,29 @@
       if (i === 0) ctx.moveTo(cx, cy); else ctx.lineTo(cx, cy);
     });
     ctx.stroke();
-
-    // نقطة الانطلاق
-    let s = (dataLog === tripLog && renderedPoints.length > 0) ? renderedPoints[0] : {cx: cx0 + pts[0].x * scale, cy: cy0 - pts[0].y * scale};
-    ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(s.cx, s.cy, 6, 0, Math.PI * 2); ctx.fill();
-
-    // نقطة النهاية
-    let lastPt = pts[pts.length - 1];
-    let lastCx = cx0 + lastPt.x * scale, lastCy = cy0 - lastPt.y * scale;
-    ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(lastCx, lastCy, 7, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-
-    if (pointAPoint) {
-      let paProj = project(pointAPoint.lat, pointAPoint.lng, origLat, origLng);
-      let pacx = cx0 + paProj.x * scale, pacy = cy0 - paProj.y * scale;
-      ctx.fillStyle = '#6366f1'; ctx.beginPath(); ctx.arc(pacx, pacy, 8, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Cairo'; ctx.textAlign = 'center'; ctx.fillText('A', pacx, pacy + 3);
-    }
-
-    if (pointBPoint) {
-      let pbProj = project(pointBPoint.lat, pointBPoint.lng, origLat, origLng);
-      let pbcx = cx0 + pbProj.x * scale, pbcy = cy0 - pbProj.y * scale;
-      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(pbcx, pbcy, 8, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Cairo'; ctx.textAlign = 'center'; ctx.fillText('B', pbcx, pbcy + 3);
-    }
   }
 
   let container = document.getElementById('canvasContainer');
   container.addEventListener('pointerdown', (e) => {
-    isDragging = true; startX = e.clientX - panX; startY = e.clientY - panY;
+    pointers.set(e.pointerId, e);
+    if (pointers.size === 1) { isDragging = true; startX = e.clientX - panX; startY = e.clientY - panY; }
     container.setPointerCapture(e.pointerId);
   });
   container.addEventListener('pointermove', (e) => {
-    if (!isDragging) return;
-    panX = e.clientX - startX; panY = e.clientY - startY;
-    requestAnimationFrame(() => drawPath(tripLog));
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, e);
+    if (pointers.size === 1 && isDragging) {
+      panX = e.clientX - startX; panY = e.clientY - startY;
+      requestAnimationFrame(() => drawPath(tripLog));
+    }
   });
-  container.addEventListener('pointerup', (e) => {
-    isDragging = false; try { container.releasePointerCapture(e.pointerId); } catch(err){}
-  });
+  function clearPointer(e) { pointers.delete(e.pointerId); if (pointers.size === 0) isDragging = false; try{container.releasePointerCapture(e.pointerId);}catch(err){} }
+  container.addEventListener('pointerup', clearPointer);
   container.addEventListener('wheel', (e) => {
     e.preventDefault();
-    zoomScale = e.deltaY < 0 ? Math.min(zoomScale + 0.12, 10.0) : Math.max(zoomScale - 0.12, 0.4);
+    zoomScale = e.deltaY < 0 ? Math.min(zoomScale + 0.15, 10.0) : Math.max(zoomScale - 0.15, 0.4);
     requestAnimationFrame(() => drawPath(tripLog));
   }, { passive: false });
-
-  canvas.addEventListener('click', function(e) {
-    if (isTracking || renderedPoints.length === 0) return;
-    let rect = canvas.getBoundingClientRect();
-    let clickX = e.clientX - rect.left, clickY = e.clientY - rect.top;
-    let closest = null, minD = Infinity;
-    
-    renderedPoints.forEach(p => {
-      let d = Math.hypot(p.cx - clickX, p.cy - clickY);
-      if (d < minD) { minD = d; closest = tripLog[p.logIndex]; }
-    });
-    
-    if (closest && minD < 30) {
-      selectedPointForAction = closest;
-      document.getElementById('pointInfoBox').style.display = 'block';
-      document.getElementById('pointDetailsText').innerHTML = `📍 نقطة محددة عند مسافة: <b>${closest.dist.toFixed(1)} متر</b> (سرعة: ${closest.speed.toFixed(1)} كم/س)`;
-    }
-  });
-
-  function setAsStartA() { if (selectedPointForAction) { pointAPoint = selectedPointForAction; drawPath(tripLog); checkAndCalcSegment(); } }
-  function setAsEndB() { if (selectedPointForAction) { pointBPoint = selectedPointForAction; drawPath(tripLog); checkAndCalcSegment(); } }
-
-  function checkAndCalcSegment() {
-    if (pointAPoint && pointBPoint) {
-      let startDist = Math.min(pointAPoint.dist, pointBPoint.dist);
-      let endDist = Math.max(pointAPoint.dist, pointBPoint.dist);
-      let segmentPoints = tripLog.filter(p => p.dist >= startDist && p.dist <= endDist);
-      let resBox = document.getElementById('segmentResult');
-      resBox.style.display = 'block';
-
-      if (segmentPoints.length < 2) { resBox.innerHTML = 'المقطع قصير جداً.'; return; }
-      let pFirst = segmentPoints[0], pLast = segmentPoints[segmentPoints.length - 1];
-      let timeDiff = Math.max(pLast.time - pFirst.time, 1);
-      let distDiff = pLast.dist - pFirst.dist;
-      let segAvg = (distDiff / 1000.0) / (timeDiff / 3600.0);
-      let maxSeg = Math.max(...segmentPoints.map(p => p.speed));
-
-      resBox.innerHTML = `🎯 <b>نتائج المقطع (A-B):</b><br>• المسافة: ${distDiff.toFixed(1)} م | الزمن: ${formatTime(timeDiff)}<br>• المتوسط: <b>${segAvg.toFixed(1)} كم/س</b> | الأقصى: <b>${maxSeg.toFixed(1)} كم/س</b>`;
-    }
-  }
 
   function formatTime(totalSeconds) {
     let h = Math.floor(totalSeconds / 3600);
@@ -499,14 +678,11 @@
   function startTrip() {
     if (!navigator.geolocation) { alert('الـ GPS غير مدعوم'); return; }
     isTracking = true; tripLog = []; originLat = null; originLng = null; topSpeedVal = 0; totalDist = 0; elapsedTime = 0;
-    pointAPoint = null; pointBPoint = null; zoomScale = 1.0; panX = 0; panY = 0;
+    zoomScale = 1.0; panX = 0; panY = 0;
     startTime = Date.now(); tripStartTimeStr = new Date().toLocaleTimeString();
     
     document.getElementById('reportSection').style.display = 'none';
-    document.getElementById('pointInfoBox').style.display = 'none';
-    document.getElementById('segmentResult').style.display = 'none';
-    updateStatus('جاري التسجيل الحي...', true);
-    document.getElementById('startTimeDisplay').innerText = 'الانطلاق: ' + tripStartTimeStr;
+    updateStatus('جاري التسجيل', true);
     document.getElementById('timeElapsed').innerText = "00:00";
     drawPath(tripLog);
 
@@ -571,80 +747,42 @@
     }
   }
 
-  function saveCombinedReportImage() {
-    let exportCanvas = document.createElement('canvas');
-    exportCanvas.width = 800; exportCanvas.height = 700;
-    let eCtx = exportCanvas.getContext('2d');
-    eCtx.fillStyle = '#090a0f'; eCtx.fillRect(0, 0, 800, 700);
-
-    eCtx.fillStyle = '#f8fafc'; eCtx.font = 'bold 22px Cairo'; eCtx.textAlign = 'right';
-    eCtx.fillText("تقرير أداء جولة تتبع الخيل الاحترافي", 760, 45);
-    eCtx.drawImage(canvas, 40, 70, 720, 380);
-
-    eCtx.fillStyle = '#131622'; eCtx.fillRect(40, 470, 720, 200);
-    eCtx.strokeStyle = 'rgba(255,255,255,0.08)'; eCtx.strokeRect(40, 470, 720, 200);
-
-    eCtx.fillStyle = '#6366f1'; eCtx.font = 'bold 16px Cairo'; eCtx.textAlign = 'right';
-    eCtx.fillText("ملخص البيانات والتحليلات الشاملة:", 720, 505);
-
-    eCtx.fillStyle = '#94a3b8'; eCtx.font = '14px Cairo';
-    let lines = document.getElementById('summaryText').innerText.split('\n');
-    let startY = 535;
-    lines.forEach(line => { eCtx.fillText(line, 720, startY); startY += 25; });
-
-    let link = document.createElement('a');
-    link.download = 'Pro_Equestrian_Report.png';
-    link.href = exportCanvas.toDataURL('image/png');
-    link.click();
+  function toggleHistoryView() {
+    let p = document.getElementById('historyExpandPanel');
+    p.style.display = p.style.display === 'block' ? 'none' : 'block';
   }
 
   function renderHistory() {
     let container = document.getElementById('historyContainer');
-    if (savedTrips.length === 0) { container.innerHTML = '<p style="font-size: 12px; color: var(--text-muted); text-align: center;">لا توجد جولات محفوظة.</p>'; return; }
-    
+    if (savedTrips.length === 0) { container.innerHTML = '<p style="font-size: 11px; color: var(--text-muted); text-align: center;">لا توجد جولات محفوظة.</p>'; return; }
     let html = '';
-    savedTrips.forEach((trip, index) => {
-      html += `
-        <div class="history-card">
-          <div class="history-header">
-            <input type="text" class="history-title-input" value="${trip.name}" onchange="updateName(${trip.id}, this.value)">
-            <div class="history-btns">
-              <button class="h-btn" onclick="loadTrip(${index})">عرض</button>
-              <button class="h-btn del" onclick="deleteTrip(${trip.id})">حذف</button>
-            </div>
-          </div>
-          <div style="color: var(--text-muted); font-size: 11px;">المسافة: <b style="color:var(--text-main);">${trip.dist.toFixed(1)}م</b> | الزمن: <b style="color:var(--text-main);">${formatTime(trip.time)}</b> | الأقصى: <b style="color:#f59e0b;">${trip.topSpeed.toFixed(1)}</b></div>
-        </div>
-      `;
+    savedTrips.forEach((trip) => {
+      html += `<div class="history-card"><b>${trip.name}</b><br>المسافة: ${trip.dist.toFixed(1)}م | الزمن: ${formatTime(trip.time)}</div>`;
     });
     container.innerHTML = html;
   }
 
-  function updateName(id, val) {
-    let t = savedTrips.find(x => x.id === id);
-    if(t) { t.name = val; localStorage.setItem('horse_trips_pro_history', JSON.stringify(savedTrips)); }
-  }
-
-  function loadTrip(index) {
-    let trip = savedTrips[index];
-    if (trip && trip.log) {
-      tripLog = trip.log; topSpeedVal = trip.topSpeed; totalDist = trip.dist;
-      pointAPoint = null; pointBPoint = null; zoomScale = 1.0; panX = 0; panY = 0;
-      drawPath(tripLog);
-      document.getElementById('summaryText').innerHTML = `• اسم الجولة: <b>${trip.name}</b><br>• المسافة: <b>${trip.dist.toFixed(1)}م</b><br>• الزمن: <b>${formatTime(trip.time)}</b><br>• متوسط السرعة: <b>${trip.avgSpeed.toFixed(1)} كم/س</b>`;
-      document.getElementById('reportSection').style.display = 'block';
-      window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
-    }
-  }
-
-  function deleteTrip(id) {
-    savedTrips = savedTrips.filter(t => t.id !== id);
-    localStorage.setItem('horse_trips_pro_history', JSON.stringify(savedTrips));
-    renderHistory();
+  function saveCombinedReportImage() {
+    let exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 700; exportCanvas.height = 500;
+    let eCtx = exportCanvas.getContext('2d');
+    eCtx.fillStyle = '#0b0f15'; eCtx.fillRect(0, 0, 700, 500);
+    eCtx.fillStyle = '#f8fafc'; eCtx.font = 'bold 20px Cairo'; eCtx.textAlign = 'right';
+    eCtx.fillText("تقرير جولة تتبع الخيل الاحترافي", 660, 45);
+    eCtx.fillStyle = '#8c9cb6'; eCtx.font = '14px Cairo';
+    let lines = document.getElementById('summaryText').innerText.split('<br>');
+    let startY = 100;
+    lines.forEach(line => {
+      let clean = line.replace(/<\/?[^>]+(>|$)/g, "");
+      if(clean) { eCtx.fillText(clean, 660, startY); startY += 30; }
+    });
+    let link = document.createElement('a');
+    link.download = 'Equestrian_Report.png';
+    link.href = exportCanvas.toDataURL('image/png');
+    link.click();
   }
 
   function onError(error) { console.log(error); }
-
   resizeCanvas();
   renderHistory();
 </script>
