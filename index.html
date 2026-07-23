@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تتبع سرعة الخيل (Canvas أوفلاين)</title>
+  <title>تتبع سرعة الخيل (حقيقي فقط)</title>
   <style>
     * { box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(180deg,#f5f7fa 0%,#eef1f5 100%); margin: 0; padding: 15px; text-align: center; color: #1a1a2e; }
@@ -49,7 +49,7 @@
 </head>
 <body>
 <div class="app-card">
-  <h1>🐎 تتبع سرعة الخيل (Canvas)</h1>
+  <h1>🐎 تتبع سرعة الخيل (حقيقي)</h1>
   <div><span id="status">الحالة: غير متصل 🔌</span></div>
   <button class="btn btn-conn" onclick="connectBLE()">🔗 اتصال بالبلوتوث (ESP32)</button>
   
@@ -75,7 +75,7 @@
 
   <div class="canvas-container">
     <canvas id="pathCanvas" width="420" height="280"></canvas>
-    <div class="canvas-label">خريطة المسار (بدون إنترنت)</div>
+    <div class="canvas-label">خريطة المسار الفعلي</div>
     <button class="clear-btn" onclick="fitPathView()">ملائمة العرض</button>
   </div>
   <p style="font-size: 11px; color: #adb5bd; margin-top: 6px;">💡 اضغط على أي نقطة بالمسار لتحديدها واختيارها للتحليل.</p>
@@ -103,7 +103,6 @@
     <button class="btn-save" onclick="saveCombinedReportImage()">📥 حفظ صورة المسار والتقرير معاً</button>
   </div>
 
-  <!-- قسم أرشيف الجولات (History) -->
   <div class="history-section">
     <h3 style="font-size: 15px; color: #2d3748; margin-bottom: 10px;">📂 سجل الجولات السابقة</h3>
     <div id="historyContainer"><p style="font-size: 12px; color: #a0aec0; text-align: center;">لا توجد جولات محفوظة بعد.</p></div>
@@ -113,6 +112,7 @@
 <script>
   let bluetoothDevice, bleCharacteristic;
   let isTracking = false, tripLog = [];
+  let watchId = null;
   let originLat = null, originLng = null;
   let totalDist = 0, topSpeedVal = 0, startTime = 0, tripStartTimeStr = "";
   let canvas = document.getElementById('pathCanvas');
@@ -134,6 +134,15 @@
       const server = await bluetoothDevice.gatt.connect();
       const service = await server.getPrimaryService(SERVICE_UUID);
       bleCharacteristic = await service.getCharacteristic(CHAR_UUID);
+      
+      // استقبال البيانات الحقيقية الواردة من ESP32 عبر البلوتوث (إذا كانت القطعة ترسل بيانات عكسية)
+      bleCharacteristic.startNotifications();
+      bleCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
+        let decoder = new TextDecoder();
+        let value = decoder.decode(event.target.value);
+        // يمكنك معالجة البيانات الواردة من القطعة هنا إذا لزم الأمر
+      });
+
       document.getElementById('status').innerText = "الحالة: متصل بالبلوتوث ✅";
     } catch (error) {
       document.getElementById('status').innerText = "خطأ في الاتصال: " + error;
@@ -174,7 +183,7 @@
     
     if (!dataLog || dataLog.length === 0) {
       ctx.fillStyle = '#475569'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('ابدأ الجولة عشان يظهر المسار هنا', w / 2, h / 2);
+      ctx.fillText('انتظار إشارات GPS الحقيقية...', w / 2, h / 2);
       return;
     }
     
@@ -255,28 +264,35 @@
   }
 
   function startTrip() {
-    if (!navigator.geolocation) { alert('الـ GPS غير مدعوم'); return; }
+    if (!navigator.geolocation) { alert('الـ GPS غير مدعوم في متصفحك'); return; }
     isTracking = true;
     tripLog = []; originLat = null; originLng = null; topSpeedVal = 0; totalDist = 0;
     startTime = Date.now();
     let now = new Date();
     tripStartTimeStr = now.toLocaleTimeString();
+    
     document.getElementById('reportSection').style.display = 'none';
     document.getElementById('pointInfoBox').style.display = 'none';
     document.getElementById('segmentResult').style.display = 'none';
-    document.getElementById('status').innerHTML = 'الحالة: جاري التسجيل 🟢';
+    document.getElementById('status').innerHTML = 'الحالة: بانتظار إشارة GPS الحقيقية... 🟢';
     document.getElementById('startTimeDisplay').innerText = 'وقت الانطلاق: ' + tripStartTimeStr;
     drawPath(tripLog);
 
-    navigator.geolocation.watchPosition(onPosition, onError, {
-      enableHighAccuracy: true, maximumAge: 1000, timeout: 10000
+    // تتبع حقيقي بحت عبر GPS الجهاز
+    watchId = navigator.geolocation.watchPosition(onPosition, onError, {
+      enableHighAccuracy: true, maximumAge: 0, timeout: 15000
     });
   }
 
   function stopTrip() {
     if (!isTracking) return;
     isTracking = false;
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+    }
     document.getElementById('status').innerHTML = 'الحالة: متوقف ⏹️';
+    
     if(tripLog.length > 0) {
       let last = tripLog[tripLog.length - 1];
       let avgAll = (last.time > 0 && last.dist > 0) ? (last.dist / 1000.0) / (last.time / 3600.0) : 0;
@@ -289,7 +305,6 @@
       document.getElementById('toDist').value = Math.round(last.dist);
       document.getElementById('reportSection').style.display = 'block';
 
-      // حفظ الجولة في الهيستوري تلقائياً
       let newTripItem = {
         id: Date.now(),
         name: "جولة " + new Date().toLocaleDateString() + " (" + tripStartTimeStr + ")",
@@ -302,6 +317,8 @@
       savedTrips.unshift(newTripItem);
       localStorage.setItem('horse_trips_history', JSON.stringify(savedTrips));
       renderHistory();
+    } else {
+      document.getElementById('status').innerHTML = 'الحالة: لم يتم تسجيل نقاط GPS حقيقية';
     }
   }
 
@@ -310,11 +327,19 @@
     let lat = position.coords.latitude;
     let lng = position.coords.longitude;
     let accuracy = position.coords.accuracy || 999;
-    document.getElementById('gpsAccuracy').innerText = 'دقة GPS: ' + Math.round(accuracy) + ' م' + (accuracy > 30 ? ' ⚠️ ضعيفة' : ' ✅');
+    
+    document.getElementById('gpsAccuracy').innerText = 'دقة GPS: ' + Math.round(accuracy) + ' م' + (accuracy > 25 ? ' ⚠️ ضعيفة' : ' ✅ دقيقة');
+    
+    // اشتراط دقة عالية نسبياً لتجنب القفزات الوهمية لإشارات الـ GPS المرتعشة
+    if (accuracy > 25) return;
+
     let speed = position.coords.speed ? position.coords.speed * 3.6 : 0;
 
-    if (accuracy > 30) return;
-    if (originLat === null) { originLat = lat; originLng = lng; }
+    if (originLat === null) { 
+      originLat = lat; 
+      originLng = lng; 
+      document.getElementById('status').innerHTML = 'الحالة: جاري التسجيل (تم التقاط الموقع) 🟢';
+    }
 
     let pointAdded = false;
     if (tripLog.length === 0) {
@@ -323,7 +348,8 @@
     } else {
       let lastPoint = tripLog[tripLog.length - 1];
       let stepDist = calculateDistance(lastPoint.lat, lastPoint.lng, lat, lng);
-      if (stepDist > 0.5 && stepDist < 100) {
+      // تجاهل التحركات الطفيفة جداً (أقل من متر واحد) لمنع احتساب اهتزازات الـ GPS والوقوف الثابت
+      if (stepDist >= 1.0 && stepDist < 150) {
         totalDist += stepDist;
         pointAdded = true;
       }
@@ -348,6 +374,7 @@
       drawPath(tripLog);
     }
 
+    // إرسال الإحداثيات والسرعة الحقيقية عبر البلوتوث للـ ESP32 إذا كان متصلاً
     if (bleCharacteristic) {
       let dataStr = `${lat},${lng},${speed.toFixed(1)}`;
       let encoder = new TextEncoder();
@@ -393,27 +420,22 @@
     `;
   }
 
-  // دمج الخريطة مع التقرير في صورة واحدة وحفظها
   function saveCombinedReportImage() {
     let exportCanvas = document.createElement('canvas');
     exportCanvas.width = 800;
     exportCanvas.height = 700;
     let eCtx = exportCanvas.getContext('2d');
 
-    // خلفية البيضاء للتصدير
     eCtx.fillStyle = '#ffffff';
     eCtx.fillRect(0, 0, 800, 700);
 
-    // عنوان التقرير بالصورة
     eCtx.fillStyle = '#1a1a2e';
     eCtx.font = 'bold 22px sans-serif';
     eCtx.textAlign = 'right';
-    eCtx.fillText("🐎 تقرير جولة تتبع سرعة الخيل", 760, 45);
+    eCtx.fillText("🐎 تقرير جولة تتبع سرعة الخيل (فعلية)", 760, 45);
 
-    // رسم الخريطة بداخلها
     eCtx.drawImage(canvas, 40, 70, 720, 380);
 
-    // تفاصيل التقرير النصية بالأسفل
     eCtx.fillStyle = '#f8f9fa';
     eCtx.fillRect(40, 470, 720, 200);
     eCtx.strokeStyle = '#ffd8b8';
@@ -428,8 +450,6 @@
     eCtx.font = '14px sans-serif';
     
     let summaryHTMLText = document.getElementById('summaryText').innerText;
-    let segText = document.getElementById('segmentResult').innerText;
-    
     let lines = summaryHTMLText.split('\n');
     let startY = 535;
     lines.forEach(line => {
@@ -437,20 +457,12 @@
       startY += 25;
     });
 
-    if(document.getElementById('segmentResult').style.display !== 'none') {
-      eCtx.fillStyle = '#12b886';
-      eCtx.fillText("-------------------------------------------------", 720, startY);
-      startY += 22;
-      eCtx.fillText("🎯 تحليل المقطع الجزئي المختار مفعل ضمن التقرير", 720, startY);
-    }
-
     let link = document.createElement('a');
-    link.download = 'Horse_Trip_Full_Report.png';
+    link.download = 'Horse_Trip_Real_Report.png';
     link.href = exportCanvas.toDataURL('image/png');
     link.click();
   }
 
-  // إدارة سجل الجولات (History)
   function renderHistory() {
     let container = document.getElementById('historyContainer');
     if (savedTrips.length === 0) {
@@ -498,7 +510,7 @@
       
       let avgAll = trip.avgSpeed || 0;
       let summaryHTML = '• اسم الجولة: <b>' + trip.name + '</b><br>' +
-                        '• إجمالي المسافة: <b>' + trip.dist.toFixed(1) + ' متر</b><br>' +
+                        '• إجمالي المسافة: <b>' + trip.dist.toFixed(1 + ' متر') + '</b><br>' +
                         '• الزمن الإجمالي: <b>' + formatTime(trip.time) + '</b><br>' +
                         '• متوسط السرعة العام: <b>' + avgAll.toFixed(1) + ' كم/س</b><br>' +
                         '• أعلى سرعة بالجولة: <b>' + trip.topSpeed.toFixed(1) + ' كم/س</b>';
