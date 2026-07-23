@@ -26,14 +26,14 @@
       font-family: 'Cairo', sans-serif; 
       background: var(--bg-base); 
       margin: 0; 
-      padding: 0 0 100px 0; 
+      padding: 0 0 110px 0; 
       text-align: center; 
       color: var(--text-main); 
       min-height: 100vh;
     }
 
     .app-container { 
-      max-width: 460px; 
+      max-width: 480px; 
       margin: 0 auto; 
       padding: 16px;
       position: relative;
@@ -43,7 +43,7 @@
     .hero-card {
       position: relative;
       width: 100%;
-      height: 350px;
+      height: 330px;
       border-radius: var(--radius-lg);
       overflow: hidden;
       margin-bottom: 14px;
@@ -74,8 +74,8 @@
     .icon-btn {
       background: rgba(18, 24, 33, 0.75);
       border: 1px solid var(--border);
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -88,7 +88,7 @@
       font-size: 12px; 
       font-weight: 600; 
       color: var(--text-muted); 
-      padding: 6px 16px; 
+      padding: 8px 18px; 
       background: rgba(18, 24, 33, 0.75); 
       border: 1px solid var(--border); 
       border-radius: 20px; 
@@ -97,8 +97,8 @@
       gap: 8px;
       backdrop-filter: blur(12px);
     }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block; }
-    .status-dot.active { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; display: inline-block; }
+    .status-dot.active { background: #10b981; box-shadow: 0 0 10px #10b981; }
 
     .hero-main-content {
       display: flex;
@@ -107,7 +107,7 @@
       gap: 10px;
     }
     .hero-title-text h1 {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 900;
       margin: 0;
       color: #fff;
@@ -118,10 +118,10 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .dr-brand-tag {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 900;
       letter-spacing: 2px;
       background: linear-gradient(135deg, #fff 20%, var(--primary) 100%);
@@ -138,8 +138,8 @@
       margin: 4px 0 0 0;
     }
     .logo-badge {
-      width: 54px;
-      height: 54px;
+      width: 52px;
+      height: 52px;
       background: rgba(18, 24, 33, 0.85);
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -161,23 +161,23 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 14px 16px;
+      padding: 16px;
       text-align: right;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .mini-stat-info .label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px; }
-    .mini-stat-info .val { font-size: 20px; font-weight: 800; color: #fff; }
-    .mini-stat-info .unit { font-size: 10px; color: var(--text-muted); }
-    .mini-stat-icon { color: var(--primary); background: rgba(255,255,255,0.03); width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+    .mini-stat-info .label { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
+    .mini-stat-info .val { font-size: 22px; font-weight: 800; color: #fff; }
+    .mini-stat-info .unit { font-size: 11px; color: var(--text-muted); }
+    .mini-stat-icon { color: var(--primary); background: rgba(255,255,255,0.03); width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
 
     /* Map Box Card */
     .map-box-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 14px;
+      padding: 16px;
       margin-bottom: 14px;
       text-align: right;
     }
@@ -187,15 +187,15 @@
       align-items: center;
       font-size: 13px;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .canvas-container { 
       position: relative; 
       width: 100%; 
-      height: 190px;
+      height: 270px;
       background: #080c10; 
       border: 1px solid var(--border); 
-      border-radius: 14px; 
+      border-radius: 16px; 
       overflow: hidden; 
       cursor: grab; 
       touch-action: none;
@@ -207,7 +207,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.2;
+      opacity: 0.18;
       pointer-events: none;
     }
     .canvas-container:active { cursor: grabbing; }
@@ -215,16 +215,48 @@
     
     .map-controls-abs {
       position: absolute;
-      bottom: 12px;
-      left: 12px;
+      bottom: 14px;
+      left: 14px;
       z-index: 5;
+      display: flex;
+      gap: 6px;
+      align-items: center;
     }
-    .btn-reset-map {
-      background: rgba(18, 24, 33, 0.85);
+    .map-zoom-group {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .btn-map-action {
+      background: rgba(18, 24, 33, 0.9);
       color: var(--text-main);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 6px 12px;
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      transition: 0.1s;
+    }
+    .btn-map-action:active { transform: scale(0.92); background: rgba(212, 175, 55, 0.3); }
+    
+    .btn-reset-map {
+      background: rgba(18, 24, 33, 0.9);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 12px;
+      height: 36px;
       font-size: 11px;
       font-family: 'Cairo', sans-serif;
       cursor: pointer;
@@ -253,7 +285,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 14px 18px;
+      padding: 16px 18px;
       margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
@@ -285,7 +317,7 @@
       text-align: right;
       position: relative;
       overflow: hidden;
-      height: 105px;
+      height: 110px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -299,7 +331,7 @@
       pointer-events: none;
     }
     .side-stat-box .h { font-size: 11px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px; z-index: 2; }
-    .side-stat-box .v { font-size: 20px; font-weight: 800; color: #fff; z-index: 2; }
+    .side-stat-box .v { font-size: 18px; font-weight: 800; color: #fff; z-index: 2; }
 
     /* Speedometer Circle */
     .speedometer-circle {
@@ -330,16 +362,16 @@
     .speed-main-val { font-size: 42px; font-weight: 900; line-height: 1; color: #fff; }
     .speed-main-unit { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
 
-    /* Buttons Row */
+    /* Action Buttons */
     .action-btn-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
     }
     .btn-custom {
-      padding: 14px;
-      font-size: 15px;
-      font-weight: 700;
+      padding: 18px;
+      font-size: 16px;
+      font-weight: 800;
       font-family: 'Cairo', sans-serif;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
@@ -347,10 +379,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       color: #fff;
       transition: 0.2s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
+    .btn-custom:active { transform: scale(0.97); }
     .btn-start-pro { background: linear-gradient(135deg, #d4af37, #b3922b); color: #0b0f15; border: none; font-weight: 900; }
     .btn-stop-pro { background: var(--surface-card); color: #fca5a5; }
 
@@ -365,9 +399,9 @@
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
-      padding: 10px 10px 16px 10px;
+      padding: 10px 10px 18px 10px;
       z-index: 1000;
-      max-width: 460px;
+      max-width: 480px;
       margin: 0 auto;
     }
     .nav-item {
@@ -394,14 +428,14 @@
     .nav-item.active i { color: var(--primary); }
 
     .panel-box { display: none; background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-md); margin-top: 12px; text-align: right; }
-    .history-card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; font-size: 11px; text-align: right; }
+    .history-card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 8px; font-size: 12px; text-align: right; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
 
-  <!-- Top Hero Header with your custom image link -->
+  <!-- Top Hero Header -->
   <div class="hero-card">
     <img src="https://iili.io/CNtFtxS.jpg" alt="Custom Horse Track Image">
     <div class="hero-overlay">
@@ -430,7 +464,7 @@
   <!-- Top Mini Stats Grid -->
   <div class="top-stats-grid">
     <div class="mini-stat-card">
-      <div class="mini-stat-icon"><i data-lucide="zap" style="width: 20px; height: 20px;"></i></div>
+      <div class="mini-stat-icon"><i data-lucide="zap" style="width: 22px; height: 22px;"></i></div>
       <div class="mini-stat-info">
         <div class="label">أعلى سرعة</div>
         <div class="val" id="topSpeed">0.0</div>
@@ -438,7 +472,7 @@
       </div>
     </div>
     <div class="mini-stat-card">
-      <div class="mini-stat-icon"><i data-lucide="trending-up" style="width: 20px; height: 20px;"></i></div>
+      <div class="mini-stat-icon"><i data-lucide="trending-up" style="width: 22px; height: 22px;"></i></div>
       <div class="mini-stat-info">
         <div class="label">المتوسط</div>
         <div class="val" id="avgSpeed">0.0</div>
@@ -447,7 +481,7 @@
     </div>
   </div>
 
-  <!-- Map Box -->
+  <!-- Map Box with Zoom Buttons Inside -->
   <div class="map-box-card">
     <div class="map-header-label">
       <span>خريطة المسار الحالي</span>
@@ -455,16 +489,24 @@
     </div>
     <div class="canvas-container" id="canvasContainer">
       <img src="https://iili.io/CNtFtxS.jpg" class="canvas-background-image" alt="Map BG">
-      <canvas id="pathCanvas" width="400" height="190"></canvas>
+      <canvas id="pathCanvas" width="450" height="270"></canvas>
+      
+      <!-- Reset Map Control -->
       <div class="map-controls-abs">
         <button class="btn-reset-map" onclick="resetMapView()"><i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i> إعادة الضبط</button>
+      </div>
+
+      <!-- Zoom In / Out Buttons (+ and -) -->
+      <div class="map-zoom-group">
+        <button class="btn-map-action" onclick="zoomInMap()">+</button>
+        <button class="btn-map-action" onclick="zoomOutMap()">-</button>
       </div>
     </div>
   </div>
 
   <!-- Tip Strip -->
   <div class="tip-strip">
-    <span>اسحب للتحرك السلس، وعجلة الماوس للتكبير والتصغير.</span>
+    <span>اسحب للتحرك السلس، واستخدم أزرار (+/-) للتكبير والتصغير.</span>
     <i data-lucide="navigation" style="width: 16px; height: 16px; color: var(--primary);"></i>
   </div>
 
@@ -500,12 +542,13 @@
       </div>
     </div>
 
+    <!-- Action Buttons -->
     <div class="action-btn-row">
       <button class="btn-custom btn-stop-pro" onclick="stopTrip()">
-        <i data-lucide="square" style="width: 18px; height: 18px;"></i> إيقاف
+        <i data-lucide="square" style="width: 20px; height: 20px;"></i> إيقاف
       </button>
       <button class="btn-custom btn-start-pro" onclick="startTrip()">
-        <i data-lucide="play" style="width: 18px; height: 18px;"></i> انطلاق
+        <i data-lucide="play" style="width: 20px; height: 20px;"></i> انطلاق
       </button>
     </div>
   </div>
@@ -515,9 +558,9 @@
     <div style="font-size: 14px; color: var(--primary); font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
       <i data-lucide="file-text" style="width: 16px; height: 16px;"></i> تقرير الجولة التحليلي
     </div>
-    <p id="summaryText" style="font-size: 12px; margin: 0 0 10px 0; line-height: 1.6; color: var(--text-muted); text-align: right;"></p>
+    <p id="summaryText" style="font-size: 12px; margin: 0 0 12px 0; line-height: 1.6; color: var(--text-muted); text-align: right;"></p>
     <button class="btn-custom btn-start-pro" style="width: 100%; margin-top: 10px;" onclick="saveCombinedReportImage()">
-      <i data-lucide="download" style="width: 16px; height: 16px;"></i> تصدير التقرير كصورة فاخرة
+      <i data-lucide="download" style="width: 18px; height: 18px;"></i> تصدير التقرير كصورة فاخرة
     </button>
   </div>
 
@@ -590,7 +633,7 @@
     let ratio = window.devicePixelRatio || 1;
     let displayWidth = canvas.clientWidth;
     canvas.width = displayWidth * ratio;
-    canvas.height = 190 * ratio;
+    canvas.height = 270 * ratio;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     drawPath(tripLog);
   }
@@ -613,9 +656,11 @@
   }
 
   function resetMapView() { zoomScale = 1.0; panX = 0; panY = 0; drawPath(tripLog); }
+  function zoomInMap() { zoomScale = Math.min(zoomScale + 0.25, 10.0); drawPath(tripLog); }
+  function zoomOutMap() { zoomScale = Math.max(zoomScale - 0.25, 0.4); drawPath(tripLog); }
 
   function drawPath(dataLog) {
-    let w = canvas.clientWidth, h = 190;
+    let w = canvas.clientWidth, h = 270;
     ctx.clearRect(0, 0, w, h);
     renderedPoints = [];
     
@@ -628,14 +673,14 @@
     let minX = Math.min(...pts.map(p => p.x)), maxX = Math.max(...pts.map(p => p.x));
     let minY = Math.min(...pts.map(p => p.y)), maxY = Math.max(...pts.map(p => p.y));
     let rangeX = Math.max(maxX - minX, 5), rangeY = Math.max(maxY - minY, 5);
-    let pad = 25;
+    let pad = 30;
     let baseScale = Math.min((w - pad * 2) / rangeX, (h - pad * 2) / rangeY);
     let scale = baseScale * zoomScale;
     
     let cx0 = w / 2 - ((minX + maxX) / 2) * scale + panX;
     let cy0 = h / 2 + ((minY + maxY) / 2) * scale + panY;
 
-    ctx.strokeStyle = '#d4af37'; ctx.lineWidth = Math.max(2, 3 * Math.min(zoomScale, 2.0)); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.strokeStyle = '#d4af37'; ctx.lineWidth = Math.max(2.5, 3.5 * Math.min(zoomScale, 2.0)); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     ctx.beginPath();
     pts.forEach((p, i) => {
       let cx = cx0 + p.x * scale, cy = cy0 - p.y * scale;
