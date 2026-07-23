@@ -3,51 +3,95 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تتبع سرعة الخيل Drs </title>
+  <title>تتبع سرعة الخيل - Equestrian Pro</title>
   <style>
     * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(180deg,#f5f7fa 0%,#eef1f5 100%); margin: 0; padding: 15px; text-align: center; color: #1a1a2e; }
-    .app-card { background: #fff; border-radius: 20px; box-shadow: 0 6px 24px rgba(0,0,0,0.08); padding: 20px; max-width: 460px; margin: 0 auto; }
-    h1 { font-size: 21px; color: #7048e8; margin: 0 0 15px 0; font-weight: 800; }
-    .speedometer { background: linear-gradient(135deg, #7048e8, #845ef7); color: white; border-radius: 50%; width: 165px; height: 165px; margin: 15px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(112,72,232,0.35); }
-    .speed-val { font-size: 40px; font-weight: 800; line-height: 1; }
-    .speed-unit { font-size: 13px; margin-top: 4px; opacity: 0.9; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
-    .stat-box { background: #f8f9fa; padding: 12px 8px; border-radius: 14px; border: 1px solid #eee; }
-    .stat-box h3 { margin: 0; font-size: 12px; color: #868e96; font-weight: 600; }
-    .stat-box p { margin: 6px 0 0 0; font-size: 17px; font-weight: 800; color: #212529; }
-    .btn-group { display: flex; gap: 10px; margin-bottom: 6px; }
-    .btn { flex: 1; padding: 12px; font-size: 15px; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; color: white; transition: 0.15s; }
-    .btn-conn { background: linear-gradient(135deg,#4263eb,#364fc7); width: 100%; margin-bottom: 12px; }
-    .btn-start { background: linear-gradient(135deg,#20c997,#12b886); box-shadow: 0 6px 14px rgba(18,184,134,0.35); }
-    .btn-stop { background: linear-gradient(135deg,#ff5252,#e03131); box-shadow: 0 6px 14px rgba(224,49,49,0.35); }
-    .btn:active { transform: scale(0.96); }
-    #status { font-size: 13px; font-weight: 700; color: #495057; margin: 10px 0 5px 0; padding: 6px 12px; background: #f1f3f5; border-radius: 20px; display: inline-block; }
-    #gpsAccuracy { font-size: 11px; color: #adb5bd; margin-bottom: 8px; }
-    #startTimeDisplay { font-size: 12px; color: #7048e8; margin-bottom: 12px; font-weight: 700; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: linear-gradient(135deg, #1f1915 0%, #2c241d 100%); 
+      margin: 0; 
+      padding: 15px; 
+      text-align: center; 
+      color: #f4f0ea; 
+    }
+    .app-card { 
+      background: #28211b; 
+      border: 1px solid #45372d;
+      border-radius: 24px; 
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4); 
+      padding: 24px; 
+      max-width: 460px; 
+      margin: 0 auto; 
+    }
+    h1 { 
+      font-size: 22px; 
+      color: #dfbc74; 
+      margin: 0 0 15px 0; 
+      font-weight: 800; 
+      letter-spacing: 0.5px;
+    }
+    .speedometer { 
+      background: radial-gradient(circle, #382e26 0%, #201a15 100%); 
+      border: 2px solid #c5a059;
+      color: #dfbc74; 
+      border-radius: 50%; 
+      width: 175px; 
+      height: 175px; 
+      margin: 18px auto; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      box-shadow: inset 0 0 20px rgba(197,160,89,0.15), 0 8px 25px rgba(0,0,0,0.5); 
+    }
+    .speed-val { font-size: 42px; font-weight: 800; line-height: 1; color: #fff; }
+    .speed-unit { font-size: 12px; margin-top: 6px; color: #c5a059; text-transform: uppercase; letter-spacing: 1px; }
     
-    .canvas-container { position: relative; width: 100%; margin-top: 15px; background: #0f172a; border-radius: 14px; overflow: hidden; cursor: grab; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .stat-box { background: #201a15; padding: 12px 10px; border-radius: 16px; border: 1px solid #3c3127; }
+    .stat-box h3 { margin: 0; font-size: 11px; color: #a39382; font-weight: 600; text-transform: uppercase; }
+    .stat-box p { margin: 6px 0 0 0; font-size: 17px; font-weight: 800; color: #f4f0ea; }
+    
+    .btn-group { display: flex; gap: 10px; margin-bottom: 8px; }
+    .btn { flex: 1; padding: 13px; font-size: 15px; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; color: white; transition: 0.2s; }
+    
+    .btn-conn { 
+      background: linear-gradient(135deg,#3c3127,#28211b); 
+      border: 1px solid #c5a059;
+      color: #dfbc74;
+      width: 100%; 
+      margin-bottom: 14px; 
+    }
+    .btn-start { background: linear-gradient(135deg,#c5a059,#a6823c); color: #1f1915; box-shadow: 0 6px 16px rgba(197,160,89,0.25); }
+    .btn-stop { background: linear-gradient(135deg,#a83232,#822222); box-shadow: 0 6px 16px rgba(168,50,50,0.3); }
+    .btn:active { transform: scale(0.96); }
+    
+    #status { font-size: 13px; font-weight: 700; color: #dfbc74; margin: 10px 0 6px 0; padding: 6px 14px; background: #201a15; border: 1px solid #3c3127; border-radius: 20px; display: inline-block; }
+    #gpsAccuracy { font-size: 11px; color: #a39382; margin-bottom: 8px; }
+    #startTimeDisplay { font-size: 12px; color: #dfbc74; margin-bottom: 12px; font-weight: 700; }
+    
+    .canvas-container { position: relative; width: 100%; margin-top: 15px; background: #15110e; border: 1px solid #3c3127; border-radius: 16px; overflow: hidden; cursor: grab; user-select: none; }
     .canvas-container:active { cursor: grabbing; }
     #pathCanvas { width: 100%; display: block; touch-action: none; }
-    .canvas-label { position: absolute; top: 8px; right: 10px; color: #94a3b8; font-size: 11px; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 8px; pointer-events: none; }
-    .clear-btn { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.15); color: #fff; border: none; border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; }
+    .canvas-label { position: absolute; top: 8px; right: 10px; color: #a39382; font-size: 11px; background: rgba(0,0,0,0.5); padding: 3px 8px; border-radius: 8px; pointer-events: none; }
+    .clear-btn { position: absolute; bottom: 10px; left: 10px; background: rgba(197,160,89,0.2); color: #dfbc74; border: 1px solid #c5a059; border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; }
 
-    .report-box { display: none; background: #f8f6fc; border: 1px solid #d8ccf8; padding: 16px; border-radius: 14px; margin-top: 15px; text-align: right; }
-    .btn-save { background: linear-gradient(135deg,#7048e8,#845ef7); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: 800; margin-top: 12px; }
+    .report-box { display: none; background: #201a15; border: 1px solid #c5a059; padding: 18px; border-radius: 16px; margin-top: 18px; text-align: right; }
+    .btn-save { background: linear-gradient(135deg,#c5a059,#a6823c); color: #1f1915; border: none; padding: 13px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 800; margin-top: 12px; }
     
-    .map-select-btn { background: #4263eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; margin: 3px; font-weight: bold; }
+    .map-select-btn { background: #3c3127; border: 1px solid #c5a059; color: #dfbc74; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; margin: 3px; font-weight: bold; }
     
-    .history-section { margin-top: 25px; border-top: 2px solid #edf2f7; padding-top: 15px; text-align: right; }
-    .history-card { background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
-    .history-title-input { font-weight: bold; font-size: 14px; border: 1px solid transparent; background: transparent; color: #2d3748; width: 70%; padding: 3px; border-radius: 6px; }
-    .history-title-input:focus { border-color: #7048e8; background: #fff; outline: none; }
-    .history-btn { background: #4263eb; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; margin-left: 5px; }
-    .history-btn-del { background: #e03131; }
+    .history-section { margin-top: 25px; border-top: 1px solid #3c3127; padding-top: 15px; text-align: right; }
+    .history-card { background: #201a15; border: 1px solid #3c3127; border-radius: 14px; padding: 14px; margin-bottom: 12px; font-size: 13px; }
+    .history-title-input { font-weight: bold; font-size: 14px; border: 1px solid transparent; background: transparent; color: #dfbc74; width: 65%; padding: 3px; border-radius: 6px; }
+    .history-title-input:focus { border-color: #c5a059; background: #28211b; outline: none; }
+    .history-btn { background: #3c3127; border: 1px solid #c5a059; color: #dfbc74; padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; margin-left: 5px; }
+    .history-btn-del { background: #822222; border-color: #a83232; color: #fff; }
   </style>
 </head>
 <body>
 <div class="app-card">
-  <h1>🐎 تتبع سرعة الخيل Drs </h1>
+  <h1>🐎 Equestrian Speed & Path</h1>
   <div><span id="status">الحالة: غير متصل 🔌</span></div>
   <button class="btn btn-conn" onclick="connectBLE()">🔗 اتصال بالبلوتوث (ESP32)</button>
   
@@ -65,39 +109,39 @@
   </div>
 
   <div class="stats-grid">
-    <div class="stat-box"><h3>المسافة</h3><p id="totalDist" style="color:#7048e8;">0 م</p></div>
-    <div class="stat-box"><h3>الزمن</h3><p id="timeElapsed" style="color:#12b886;">00:00</p></div>
-    <div class="stat-box"><h3>أعلى سرعة</h3><p id="topSpeed" style="color:#e64980;">0.0 كم/س</p></div>
-    <div class="stat-box"><h3>متوسط السرعة</h3><p id="avgSpeed" style="color:#4263eb;">0.0 كم/س</p></div>
+    <div class="stat-box"><h3>المسافة</h3><p id="totalDist" style="color:#dfbc74;">0 م</p></div>
+    <div class="stat-box"><h3>الزمن</h3><p id="timeElapsed" style="color:#d4af37;">00:00</p></div>
+    <div class="stat-box"><h3>أعلى سرعة</h3><p id="topSpeed" style="color:#e06d6d;">0.0 كم/س</p></div>
+    <div class="stat-box"><h3>متوسط السرعة</h3><p id="avgSpeed" style="color:#dfbc74;">0.0 كم/س</p></div>
   </div>
 
   <div class="canvas-container" id="canvasContainer">
     <canvas id="pathCanvas" width="420" height="280"></canvas>
-    <div class="canvas-label">خريطة المسار التفاعلية</div>
-    <button class="clear-btn" onclick="resetMapView()">إعادة ضبط العرض</button>
+    <div class="canvas-label">مسار الحلبة الفاخر</div>
+    <button class="clear-btn" onclick="resetMapView()">إعادة ضبط</button>
   </div>
-  <p style="font-size: 11px; color: #adb5bd; margin-top: 6px;">💡 اسحب الخريطة للتحريك، وعجلة الماوس للتكبير والتصغير، وانقر لاختيار A أو B.</p>
+  <p style="font-size: 11px; color: #a39382; margin-top: 6px;">💡 اسحب للتحريك السلس، وعجلة الماوس للتكبير والتصغير.</p>
   
-  <div id="pointInfoBox" style="display:none; background:#f3f0ff; border:1px solid #d8ccf8; padding:10px 14px; border-radius:12px; margin-top:10px; text-align:right; font-size:13px; color:#5f3dc4; font-weight:600; line-height:1.8;">
+  <div id="pointInfoBox" style="display:none; background:#201a15; border:1px solid #c5a059; padding:12px 14px; border-radius:14px; margin-top:12px; text-align:right; font-size:13px; color:#dfbc74; font-weight:600; line-height:1.8;">
     <div id="pointDetailsText"></div>
     <div style="margin-top: 8px; text-align: center;">
       <button class="map-select-btn" onclick="setAsStartA()">📌 تعيين كبداية (A)</button>
-      <button class="map-select-btn" onclick="setAsEndB()" style="background:#e03131;">🏁 تعيين كنهاية (B)</button>
+      <button class="map-select-btn" onclick="setAsEndB()" style="background:#822222; border-color:#a83232; color:#fff;">🏁 تعيين كنهاية (B)</button>
     </div>
   </div>
   
   <div id="reportSection" class="report-box">
-    <h3 style="margin:0 0 8px 0; color:#7048e8;">📊 تقرير الجولة الكامل</h3>
-    <p id="summaryText" style="font-size:13px; margin:5px 0; line-height:1.8;"></p>
+    <h3 style="margin:0 0 10px 0; color:#dfbc74;">📊 تقرير الجولة الفاخر</h3>
+    <p id="summaryText" style="font-size:13px; margin:5px 0; line-height:1.8; color:#f4f0ea;"></p>
     
-    <div id="segmentResult" style="margin-top:10px; font-size:13px; background:#fff; padding:10px; border-radius:8px; border:1px solid #d8ccf8; text-align:right; line-height:1.8; display:none;"></div>
+    <div id="segmentResult" style="margin-top:12px; font-size:13px; background:#15110e; padding:12px; border-radius:10px; border:1px solid #c5a059; text-align:right; line-height:1.8; display:none; color:#f4f0ea;"></div>
     
-    <button class="btn-save" onclick="saveCombinedReportImage()">📥 حفظ صورة المسار والتقرير معاً</button>
+    <button class="btn-save" onclick="saveCombinedReportImage()">📥 حفظ تقرير الصورة الفاخرة</button>
   </div>
 
   <div class="history-section">
-    <h3 style="font-size: 15px; color: #2d3748; margin-bottom: 10px;">📂 سجل الجولات السابقة</h3>
-    <div id="historyContainer"><p style="font-size: 12px; color: #a0aec0; text-align: center;">لا توجد جولات محفوظة بعد.</p></div>
+    <h3 style="font-size: 15px; color: #dfbc74; margin-bottom: 12px;">📂 أرشيف الجولات</h3>
+    <div id="historyContainer"><p style="font-size: 12px; color: #a39382; text-align: center;">لا توجد جولات محفوظة بعد.</p></div>
   </div>
 </div>
 
@@ -115,12 +159,11 @@
   let pointAPoint = null, pointBPoint = null;
   let savedTrips = JSON.parse(localStorage.getItem('horse_trips_history')) || [];
 
-  // إعدادات التحريك والتكبير (Pan & Zoom)
   let zoomScale = 1.0;
   let panX = 0;
   let panY = 0;
   let isDragging = false;
-  let startDragX = 0, startDragY = 0;
+  let startX = 0, startY = 0;
 
   const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const CHAR_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
@@ -137,11 +180,6 @@
       bleCharacteristic = await service.getCharacteristic(CHAR_UUID);
       
       bleCharacteristic.startNotifications();
-      bleCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
-        let decoder = new TextDecoder();
-        let value = decoder.decode(event.target.value);
-      });
-
       document.getElementById('status').innerText = "الحالة: متصل بالبلوتوث ✅";
     } catch (error) {
       document.getElementById('status').innerText = "خطأ في الاتصال: " + error;
@@ -184,11 +222,11 @@
   function drawPath(dataLog) {
     let w = canvas.clientWidth, h = 280;
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#15110e'; ctx.fillRect(0, 0, w, h);
     renderedPoints = [];
     
     if (!dataLog || dataLog.length === 0) {
-      ctx.fillStyle = '#475569'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#a39382'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center';
       ctx.fillText('انتظار إشارات GPS الحقيقية...', w / 2, h / 2);
       return;
     }
@@ -205,13 +243,13 @@
     let cx0 = w / 2 - ((minX + maxX) / 2) * scale + panX;
     let cy0 = h / 2 + ((minY + maxY) / 2) * scale + panY;
 
-    // شبكة الخلفية
-    ctx.strokeStyle = 'rgba(148,163,184,0.15)'; ctx.lineWidth = 1;
+    // شبكة خلفية راقية
+    ctx.strokeStyle = 'rgba(197,160,89,0.08)'; ctx.lineWidth = 1;
     for (let gx = 0; gx < w; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
     for (let gy = 0; gy < h; gy += 30) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
 
-    // رسم المسار (بنفسجي)
-    ctx.strokeStyle = '#9775fa'; ctx.lineWidth = 3 * Math.max(0.7, Math.min(zoomScale, 2.0)); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    // رسم مسار الخيل باللون الذهبي النحاسي الراقي
+    ctx.strokeStyle = '#c5a059'; ctx.lineWidth = Math.max(2, 3.5 * Math.min(zoomScale, 2.0)); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     ctx.beginPath();
     pts.forEach((p, i) => {
       let cx = cx0 + p.x * scale, cy = cy0 - p.y * scale;
@@ -222,86 +260,64 @@
 
     // نقطة الانطلاق
     let s = (dataLog === tripLog && renderedPoints.length > 0) ? renderedPoints[0] : {cx: cx0 + pts[0].x * scale, cy: cy0 - pts[0].y * scale};
-    ctx.fillStyle = '#20c997'; ctx.beginPath(); ctx.arc(s.cx, s.cy, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#4e9373'; ctx.beginPath(); ctx.arc(s.cx, s.cy, 6, 0, Math.PI * 2); ctx.fill();
 
     // نقطة النهاية
     let lastPt = pts[pts.length - 1];
     let lastCx = cx0 + lastPt.x * scale, lastCy = cy0 - lastPt.y * scale;
-    ctx.fillStyle = '#ff3b3b'; ctx.beginPath(); ctx.arc(lastCx, lastCy, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#a83232'; ctx.beginPath(); ctx.arc(lastCx, lastCy, 7, 0, Math.PI * 2); ctx.fill();
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
 
-    // علامات A و B
+    // نقاط A و B
     if (pointAPoint) {
       let paProj = project(pointAPoint.lat, pointAPoint.lng, origLat, origLng);
       let pacx = cx0 + paProj.x * scale, pacy = cy0 - paProj.y * scale;
-      ctx.fillStyle = '#4263eb'; ctx.beginPath(); ctx.arc(pacx, pacy, 8, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('A', pacx, pacy + 3);
+      ctx.fillStyle = '#3c3127'; ctx.beginPath(); ctx.arc(pacx, pacy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#c5a059'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#dfbc74'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('A', pacx, pacy + 3);
     }
 
     if (pointBPoint) {
       let pbProj = project(pointBPoint.lat, pointBPoint.lng, origLat, origLng);
       let pbcx = cx0 + pbProj.x * scale, pbcy = cy0 - pbProj.y * scale;
-      ctx.fillStyle = '#e03131'; ctx.beginPath(); ctx.arc(pbcx, pbcy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#a83232'; ctx.beginPath(); ctx.arc(pbcx, pbcy, 8, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
       ctx.fillStyle = '#fff'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('B', pbcx, pbcy + 3);
     }
   }
 
-  // أحداث التفاعل مع الفأرة واللمس للتحريك والتكبير
   let container = document.getElementById('canvasContainer');
 
-  container.addEventListener('mousedown', (e) => {
+  container.addEventListener('pointerdown', (e) => {
     isDragging = true;
-    startDragX = e.clientX - panX;
-    startDragY = e.clientY - panY;
+    startX = e.clientX - panX;
+    startY = e.clientY - panY;
+    container.setPointerCapture(e.pointerId);
   });
 
-  window.addEventListener('mousemove', (e) => {
+  container.addEventListener('pointermove', (e) => {
     if (!isDragging) return;
-    panX = e.clientX - startDragX;
-    panY = e.clientY - startDragY;
-    drawPath(tripLog);
+    panX = e.clientX - startX;
+    panY = e.clientY - startY;
+    requestAnimationFrame(() => drawPath(tripLog));
   });
 
-  window.addEventListener('mouseup', () => {
+  container.addEventListener('pointerup', (e) => {
     isDragging = false;
+    try { container.releasePointerCapture(e.pointerId); } catch(err){}
   });
 
-  // دعم اللمس للجوال (سحب الخريطة)
-  container.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 1) {
-      isDragging = true;
-      startDragX = e.touches[0].clientX - panX;
-      startDragY = e.touches[0].clientY - panY;
-    }
-  });
-
-  container.addEventListener('touchmove', (e) => {
-    if (!isDragging || e.touches.length !== 1) return;
-    panX = e.touches[0].clientX - startDragX;
-    panY = e.touches[0].clientY - startDragY;
-    drawPath(tripLog);
-  });
-
-  container.addEventListener('touchend', () => {
-    isDragging = false;
-  });
-
-  // التكبير والتصغير باستخدام عجلة الماوس (Zoom)
   container.addEventListener('wheel', (e) => {
     e.preventDefault();
-    let zoomFactor = 0.15;
+    let zoomFactor = 0.12;
     if (e.deltaY < 0) {
-      zoomScale += zoomFactor; // تكبير
+      zoomScale = Math.min(zoomScale + zoomFactor, 10.0);
     } else {
-      zoomScale -= zoomFactor; // تصغير
-      if (zoomScale < 0.5) zoomScale = 0.5; // الحد الأدنى للتصغير
+      zoomScale = Math.max(zoomScale - zoomFactor, 0.4);
     }
-    drawPath(tripLog);
+    requestAnimationFrame(() => drawPath(tripLog));
   }, { passive: false });
 
-  // النقر لتحديد النقاط أو تفعيلها
   canvas.addEventListener('click', function(e) {
     if (isTracking || renderedPoints.length === 0) return;
     let rect = canvas.getBoundingClientRect();
@@ -313,8 +329,7 @@
       if (d < minD) { minD = d; closest = tripLog[p.logIndex]; }
     });
     
-    // إذا كانت النقرة قريبة من نقطة بالمسار بمسافة معقولة
-    if (closest && minD < 25) {
+    if (closest && minD < 30) {
       selectedPointForAction = closest;
       let box = document.getElementById('pointInfoBox');
       box.style.display = 'block';
@@ -369,8 +384,8 @@
         🎯 <b>نتائج المقطع المخصص (من A إلى B):</b><br>
         • المسافة بين النقطتين: <b>${distDiff.toFixed(1)} متر</b><br>
         ⏱️ الزمن المستغرق: <b>${formatTime(timeDiff)}</b><br>
-        🚀 متوسط السرعة: <b style="color:#12b886;">${segmentAvgSpeed.toFixed(1)} كم/س</b><br>
-        ⚡ أقصى سرعة بالمقطع: <b style="color:#e64980;">${maxSpeedInSegment.toFixed(1)} كم/س</b>
+        🚀 متوسط السرعة: <b style="color:#dfbc74;">${segmentAvgSpeed.toFixed(1)} كم/س</b><br>
+        ⚡ أقصى سرعة بالمقطع: <b style="color:#e06d6d;">${maxSpeedInSegment.toFixed(1)} كم/س</b>
       `;
     }
   }
@@ -500,12 +515,6 @@
       tripLog.push({dist: totalDist, time: elapsedTime, speed: speed, lat: lat, lng: lng});
       drawPath(tripLog);
     }
-
-    if (bleCharacteristic) {
-      let dataStr = `${lat},${lng},${speed.toFixed(1)}`;
-      let encoder = new TextEncoder();
-      bleCharacteristic.writeValue(encoder.encode(dataStr)).catch(err => console.log(err));
-    }
   }
 
   function saveCombinedReportImage() {
@@ -514,27 +523,27 @@
     exportCanvas.height = 700;
     let eCtx = exportCanvas.getContext('2d');
 
-    eCtx.fillStyle = '#ffffff';
+    eCtx.fillStyle = '#1f1915';
     eCtx.fillRect(0, 0, 800, 700);
 
-    eCtx.fillStyle = '#1a1a2e';
+    eCtx.fillStyle = '#dfbc74';
     eCtx.font = 'bold 22px sans-serif';
     eCtx.textAlign = 'right';
-    eCtx.fillText("🐎 تقرير جولة تتبع سرعة الخيل (فعلية)", 760, 45);
+    eCtx.fillText("🐎 تقرير جولة تتبع سرعة الخيل (Equestrian Pro)", 760, 45);
 
     eCtx.drawImage(canvas, 40, 70, 720, 380);
 
-    eCtx.fillStyle = '#f8f6fc';
+    eCtx.fillStyle = '#28211b';
     eCtx.fillRect(40, 470, 720, 200);
-    eCtx.strokeStyle = '#d8ccf8';
+    eCtx.strokeStyle = '#c5a059';
     eCtx.strokeRect(40, 470, 720, 200);
 
-    eCtx.fillStyle = '#7048e8';
+    eCtx.fillStyle = '#dfbc74';
     eCtx.font = 'bold 16px sans-serif';
     eCtx.textAlign = 'right';
     eCtx.fillText("📊 ملخص البيانات والنتائج:", 720, 505);
 
-    eCtx.fillStyle = '#212529';
+    eCtx.fillStyle = '#f4f0ea';
     eCtx.font = '14px sans-serif';
     
     let summaryHTMLText = document.getElementById('summaryText').innerText;
@@ -546,7 +555,7 @@
     });
 
     let link = document.createElement('a');
-    link.download = 'Horse_Trip_Real_Report.png';
+    link.download = 'Equestrian_Trip_Report.png';
     link.href = exportCanvas.toDataURL('image/png');
     link.click();
   }
@@ -554,7 +563,7 @@
   function renderHistory() {
     let container = document.getElementById('historyContainer');
     if (savedTrips.length === 0) {
-      container.innerHTML = '<p style="font-size: 12px; color: #a0aec0; text-align: center;">لا توجد جولات محفوظة بعد.</p>';
+      container.innerHTML = '<p style="font-size: 12px; color: #a39382; text-align: center;">لا توجد جولات محفوظة بعد.</p>';
       return;
     }
     
@@ -570,9 +579,9 @@
               <button class="history-btn history-btn-del" onclick="deleteTrip(${trip.id})">حذف</button>
             </div>
           </div>
-          <div style="font-size: 11px; color: #4a5568; line-height: 1.6;">
-            • المسافة: <b>${trip.dist.toFixed(1)} م</b> | الزمن: <b>${formatTime(trip.time)}</b><br>
-            • أعلى سرعة: <b style="color:#e64980;">${trip.topSpeed.toFixed(1)} كم/س</b> | المتوسط: <b style="color:#4263eb;">${avgAll.toFixed(1)} كم/س</b>
+          <div style="font-size: 11px; color: #a39382; line-height: 1.6;">
+            • المسافة: <b style="color:#f4f0ea;">${trip.dist.toFixed(1)} م</b> | الزمن: <b style="color:#f4f0ea;">${formatTime(trip.time)}</b><br>
+            • أعلى سرعة: <b style="color:#e06d6d;">${trip.topSpeed.toFixed(1)} كم/س</b> | المتوسط: <b style="color:#dfbc74;">${avgAll.toFixed(1)} كم/س</b>
           </div>
         </div>
       `;
@@ -605,549 +614,6 @@
                         '• متوسط السرعة العام: <b>' + avgAll.toFixed(1) + ' كم/س</b><br>' +
                         '• أعلى سرعة بالجولة: <b>' + trip.topSpeed.toFixed(1) + ' كم/س</b>';
       document.getElementById('summaryText').innerHTML = summaryHTML;
-      document.getElementById('reportSection').style.display = 'block';
-      window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
-    }
-  }
-
-  function deleteTrip(id) {
-    savedTrips = savedTrips.filter(t => t.id !== id);
-    localStorage.setItem('horse_trips_history', JSON.stringify(savedTrips));
-    renderHistory();
-  }
-
-  function onError(error) { 
-    console.log(error.message); 
-    document.getElementById('gpsAccuracy').innerText = 'خطأ GPS: ' + error.message; 
-  }
-
-  resizeCanvas();
-  renderHistory();
-</script>
-</body>
-</html><!DOCTYPE html>
-<html dir="rtl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تتبع سرعة الخيل Dr.S</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(180deg,#f5f7fa 0%,#eef1f5 100%); margin: 0; padding: 15px; text-align: center; color: #1a1a2e; }
-    .app-card { background: #fff; border-radius: 20px; box-shadow: 0 6px 24px rgba(0,0,0,0.08); padding: 20px; max-width: 460px; margin: 0 auto; }
-    h1 { font-size: 21px; color: #7048e8; margin: 0 0 15px 0; font-weight: 800; }
-    .speedometer { background: linear-gradient(135deg, #7048e8, #845ef7); color: white; border-radius: 50%; width: 165px; height: 165px; margin: 15px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(112,72,232,0.35); }
-    .speed-val { font-size: 40px; font-weight: 800; line-height: 1; }
-    .speed-unit { font-size: 13px; margin-top: 4px; opacity: 0.9; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
-    .stat-box { background: #f8f9fa; padding: 12px 8px; border-radius: 14px; border: 1px solid #eee; }
-    .stat-box h3 { margin: 0; font-size: 12px; color: #868e96; font-weight: 600; }
-    .stat-box p { margin: 6px 0 0 0; font-size: 17px; font-weight: 800; color: #212529; }
-    .btn-group { display: flex; gap: 10px; margin-bottom: 6px; }
-    .btn { flex: 1; padding: 12px; font-size: 15px; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; color: white; transition: 0.15s; }
-    .btn-conn { background: linear-gradient(135deg,#4263eb,#364fc7); width: 100%; margin-bottom: 12px; }
-    .btn-start { background: linear-gradient(135deg,#20c997,#12b886); box-shadow: 0 6px 14px rgba(18,184,134,0.35); }
-    .btn-stop { background: linear-gradient(135deg,#ff5252,#e03131); box-shadow: 0 6px 14px rgba(224,49,49,0.35); }
-    .btn:active { transform: scale(0.96); }
-    #status { font-size: 13px; font-weight: 700; color: #495057; margin: 10px 0 5px 0; padding: 6px 12px; background: #f1f3f5; border-radius: 20px; display: inline-block; }
-    #gpsAccuracy { font-size: 11px; color: #adb5bd; margin-bottom: 8px; }
-    #startTimeDisplay { font-size: 12px; color: #7048e8; margin-bottom: 12px; font-weight: 700; }
-    
-    .canvas-container { position: relative; width: 100%; margin-top: 15px; background: #0f172a; border-radius: 14px; overflow: hidden; }
-    #pathCanvas { width: 100%; display: block; touch-action: none; }
-    .canvas-label { position: absolute; top: 8px; right: 10px; color: #94a3b8; font-size: 11px; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 8px; }
-    .clear-btn { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.15); color: #fff; border: none; border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; }
-
-    .report-box { display: none; background: #f8f6fc; border: 1px solid #d8ccf8; padding: 16px; border-radius: 14px; margin-top: 15px; text-align: right; }
-    .input-row { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
-    .input-row input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 14px; }
-    .btn-calc { background: #7048e8; color: white; border: none; padding: 9px 15px; border-radius: 8px; cursor: pointer; font-weight: 700; }
-    .btn-save { background: linear-gradient(135deg,#7048e8,#845ef7); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: 800; margin-top: 12px; }
-    
-    .map-select-btn { background: #4263eb; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; margin: 3px; font-weight: bold; }
-    
-    .history-section { margin-top: 25px; border-top: 2px solid #edf2f7; padding-top: 15px; text-align: right; }
-    .history-card { background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
-    .history-title-input { font-weight: bold; font-size: 14px; border: 1px solid transparent; background: transparent; color: #2d3748; width: 70%; padding: 3px; border-radius: 6px; }
-    .history-title-input:focus { border-color: #7048e8; background: #fff; outline: none; }
-    .history-btn { background: #4263eb; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; margin-left: 5px; }
-    .history-btn-del { background: #e03131; }
-  </style>
-</head>
-<body>
-<div class="app-card">
-  <h1>🐎 تتبع سرعة الخيلDr.s</h1>
-  <div><span id="status">الحالة: غير متصل 🔌</span></div>
-  <button class="btn btn-conn" onclick="connectBLE()">🔗 اتصال بالبلوتوث (ESP32)</button>
-  
-  <div id="gpsAccuracy">دقة GPS: --</div>
-  <div id="startTimeDisplay">وقت الانطلاق: --:--:--</div>
-  
-  <div class="btn-group">
-    <button class="btn btn-start" onclick="startTrip()">انطلاق 🚀</button>
-    <button class="btn btn-stop" onclick="stopTrip()">توقف ⏹️</button>
-  </div>
-
-  <div class="speedometer">
-    <span class="speed-val" id="currSpeed">0.0</span>
-    <span class="speed-unit">كم / س</span>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-box"><h3>المسافة</h3><p id="totalDist" style="color:#7048e8;">0 م</p></div>
-    <div class="stat-box"><h3>الزمن</h3><p id="timeElapsed" style="color:#12b886;">00:00</p></div>
-    <div class="stat-box"><h3>أعلى سرعة</h3><p id="topSpeed" style="color:#e64980;">0.0 كم/س</p></div>
-    <div class="stat-box"><h3>متوسط السرعة</h3><p id="avgSpeed" style="color:#4263eb;">0.0 كم/س</p></div>
-  </div>
-
-  <div class="canvas-container">
-    <canvas id="pathCanvas" width="420" height="280"></canvas>
-    <div class="canvas-label">خريطة المسار الفعلي</div>
-    <button class="clear-btn" onclick="fitPathView()">ملائمة العرض</button>
-  </div>
-  <p style="font-size: 11px; color: #adb5bd; margin-top: 6px;">💡 اضغط على أي نقطة بالمسار لتحديدها واختيارها للتحليل.</p>
-  
-  <div id="pointInfoBox" style="display:none; background:#f3f0ff; border:1px solid #d8ccf8; padding:10px 14px; border-radius:12px; margin-top:10px; text-align:right; font-size:13px; color:#5f3dc4; font-weight:600; line-height:1.8;">
-    <div id="pointDetailsText"></div>
-    <div style="margin-top: 8px; text-align: center;">
-      <button class="map-select-btn" onclick="setAsStart()">🎯 تعيين كبداية للمقطع</button>
-      <button class="map-select-btn" onclick="setAsEnd()" style="background:#e03131;">🏁 تعيين كنهاية للمقطع</button>
-    </div>
-  </div>
-  
-  <div id="reportSection" class="report-box">
-    <h3 style="margin:0 0 8px 0; color:#7048e8;">📊 تقرير الجولة الكامل</h3>
-    <p id="summaryText" style="font-size:13px; margin:5px 0; line-height:1.8;"></p>
-    <hr style="border:0; border-top:1px solid #d8ccf8; margin:10px 0;">
-    <b style="font-size:12px; color:#212529;">🎯 تحليل مقطع مخصص:</b>
-    <div class="input-row">
-      <label style="font-size:12px;">من (م):</label><input type="number" id="fromDist" value="0">
-      <label style="font-size:12px;">إلى (م):</label><input type="number" id="toDist" value="1000">
-      <button class="btn-calc" onclick="calculateCustomSegment()">حساب</button>
-    </div>
-    <div id="segmentResult" style="margin-top:10px; font-size:13px; background:#fff; padding:10px; border-radius:8px; border:1px solid #d8ccf8; text-align:right; line-height:1.8; display:none;"></div>
-    
-    <button class="btn-save" onclick="saveCombinedReportImage()">📥 حفظ صورة المسار والتقرير معاً</button>
-  </div>
-
-  <div class="history-section">
-    <h3 style="font-size: 15px; color: #2d3748; margin-bottom: 10px;">📂 سجل الجولات السابقة</h3>
-    <div id="historyContainer"><p style="font-size: 12px; color: #a0aec0; text-align: center;">لا توجد جولات محفوظة بعد.</p></div>
-  </div>
-</div>
-
-<script>
-  let bluetoothDevice, bleCharacteristic;
-  let isTracking = false, tripLog = [];
-  let watchId = null, timerInterval = null;
-  let originLat = null, originLng = null;
-  let totalDist = 0, topSpeedVal = 0, startTime = 0, elapsedTime = 0, tripStartTimeStr = "";
-  let canvas = document.getElementById('pathCanvas');
-  let ctx = canvas.getContext('2d');
-  let renderedPoints = [];
-  let selectedPointForAction = null;
-  let savedTrips = JSON.parse(localStorage.getItem('horse_trips_history')) || [];
-
-  const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-  const CHAR_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-
-  async function connectBLE() {
-    try {
-      document.getElementById('status').innerText = "جاري البحث عن الجهاز...";
-      bluetoothDevice = await navigator.bluetooth.requestDevice({
-        filters: [{ name: 'HorseTracker_BLE' }],
-        optionalServices: [SERVICE_UUID]
-      });
-      const server = await bluetoothDevice.gatt.connect();
-      const service = await server.getPrimaryService(SERVICE_UUID);
-      bleCharacteristic = await service.getCharacteristic(CHAR_UUID);
-      
-      bleCharacteristic.startNotifications();
-      bleCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
-        let decoder = new TextDecoder();
-        let value = decoder.decode(event.target.value);
-      });
-
-      document.getElementById('status').innerText = "الحالة: متصل بالبلوتوث ✅";
-    } catch (error) {
-      document.getElementById('status').innerText = "خطأ في الاتصال: " + error;
-    }
-  }
-
-  function resizeCanvas() {
-    let ratio = window.devicePixelRatio || 1;
-    let displayWidth = canvas.clientWidth;
-    canvas.width = displayWidth * ratio;
-    canvas.height = 280 * ratio;
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    drawPath(tripLog);
-  }
-  window.addEventListener('resize', resizeCanvas);
-
-  function project(lat, lng, origLat, origLng) {
-    let x = (lng - origLng) * Math.cos(origLat * Math.PI/180) * 111320;
-    let y = (lat - origLat) * 110540;
-    return {x: x, y: y};
-  }
-
-  function calculateDistance(lat1, lon1, lat2, lon2) {
-    let dLat = (lat2 - lat1) * Math.PI / 180;
-    let dLon = (lon2 - lon1) * Math.PI / 180;
-    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return 6371000.0 * c;
-  }
-
-  function drawPath(dataLog) {
-    let w = canvas.clientWidth, h = 280;
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, w, h);
-    renderedPoints = [];
-    
-    if (!dataLog || dataLog.length === 0) {
-      ctx.fillStyle = '#475569'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('انتظار إشارات GPS الحقيقية...', w / 2, h / 2);
-      return;
-    }
-    
-    let origLat = dataLog[0].lat, origLng = dataLog[0].lng;
-    let pts = dataLog.map(p => project(p.lat, p.lng, origLat, origLng));
-    let minX = Math.min(...pts.map(p => p.x)), maxX = Math.max(...pts.map(p => p.x));
-    let minY = Math.min(...pts.map(p => p.y)), maxY = Math.max(...pts.map(p => p.y));
-    let rangeX = Math.max(maxX - minX, 5), rangeY = Math.max(maxY - minY, 5);
-    let pad = 30;
-    let scale = Math.min((w - pad * 2) / rangeX, (h - pad * 2) / rangeY);
-    let cx0 = w / 2 - ((minX + maxX) / 2) * scale;
-    let cy0 = h / 2 + ((minY + maxY) / 2) * scale;
-
-    ctx.strokeStyle = 'rgba(148,163,184,0.15)'; ctx.lineWidth = 1;
-    for (let gx = 0; gx < w; gx += 30) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
-    for (let gy = 0; gy < h; gy += 30) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
-
-    // لون المسار (بنفسجي)
-    ctx.strokeStyle = '#9775fa'; ctx.lineWidth = 3; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-    ctx.beginPath();
-    pts.forEach((p, i) => {
-      let cx = cx0 + p.x * scale, cy = cy0 - p.y * scale;
-      if (dataLog === tripLog) renderedPoints.push({cx: cx, cy: cy, logIndex: i});
-      if (i === 0) ctx.moveTo(cx, cy); else ctx.lineTo(cx, cy);
-    });
-    ctx.stroke();
-
-    let s = (dataLog === tripLog && renderedPoints.length > 0) ? renderedPoints[0] : {cx: cx0 + pts[0].x * scale, cy: cy0 - pts[0].y * scale};
-    ctx.fillStyle = '#20c997'; ctx.beginPath(); ctx.arc(s.cx, s.cy, 6, 0, Math.PI * 2); ctx.fill();
-
-    let lastPt = pts[pts.length - 1];
-    let lastCx = cx0 + lastPt.x * scale, lastCy = cy0 - lastPt.y * scale;
-    ctx.fillStyle = '#ff3b3b'; ctx.beginPath(); ctx.arc(lastCx, lastCy, 7, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-  }
-
-  function fitPathView() { drawPath(tripLog); }
-
-  canvas.addEventListener('click', function(e) {
-    if (isTracking || renderedPoints.length === 0) return;
-    let rect = canvas.getBoundingClientRect();
-    let clickX = e.clientX - rect.left, clickY = e.clientY - rect.top;
-    let closest = null, minD = Infinity;
-    
-    renderedPoints.forEach(p => {
-      let d = Math.hypot(p.cx - clickX, p.cy - clickY);
-      if (d < minD) { minD = d; closest = tripLog[p.logIndex]; }
-    });
-    
-    if (closest) {
-      selectedPointForAction = closest;
-      let box = document.getElementById('pointInfoBox');
-      box.style.display = 'block';
-      document.getElementById('pointDetailsText').innerHTML = 
-        `📍 نقطة مختارة عند مسافة: <b>${closest.dist.toFixed(1)} متر</b> (سرعة لحظية: ${closest.speed.toFixed(1)} كم/س)`;
-    }
-  });
-
-  function setAsStart() {
-    if (selectedPointForAction) {
-      document.getElementById('fromDist').value = Math.round(selectedPointForAction.dist);
-      calculateCustomSegment();
-    }
-  }
-
-  function setAsEnd() {
-    if (selectedPointForAction) {
-      document.getElementById('toDist').value = Math.round(selectedPointForAction.dist);
-      calculateCustomSegment();
-    }
-  }
-
-  function formatTime(totalSeconds) {
-    let h = Math.floor(totalSeconds / 3600);
-    let m = Math.floor((totalSeconds % 3600) / 60);
-    let s = Math.floor(totalSeconds % 60);
-    let mm = String(m).padStart(2,'0'), ss = String(s).padStart(2,'0');
-    return h > 0 ? (h + ':' + mm + ':' + ss) : (mm + ':' + ss);
-  }
-
-  function startTrip() {
-    if (!navigator.geolocation) { alert('الـ GPS غير مدعوم في متصفحك'); return; }
-    isTracking = true;
-    tripLog = []; originLat = null; originLng = null; topSpeedVal = 0; totalDist = 0; elapsedTime = 0;
-    startTime = Date.now();
-    let now = new Date();
-    tripStartTimeStr = now.toLocaleTimeString();
-    
-    document.getElementById('reportSection').style.display = 'none';
-    document.getElementById('pointInfoBox').style.display = 'none';
-    document.getElementById('segmentResult').style.display = 'none';
-    document.getElementById('status').innerHTML = 'الحالة: بانتظار إشارة GPS الحقيقية... 🟢';
-    document.getElementById('startTimeDisplay').innerText = 'وقت الانطلاق: ' + tripStartTimeStr;
-    document.getElementById('timeElapsed').innerText = "00:00";
-    drawPath(tripLog);
-
-    // عداد ثوانٍ مستقل يتحدث كل ثانية بدقة
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      if (!isTracking) return;
-      elapsedTime++;
-      document.getElementById('timeElapsed').innerText = formatTime(elapsedTime);
-      
-      let avg = (elapsedTime > 0 && totalDist > 0) ? (totalDist/1000.0)/(elapsedTime/3600.0) : 0;
-      document.getElementById('avgSpeed').innerText = avg.toFixed(1) + ' كم/س';
-    }, 1000);
-
-    watchId = navigator.geolocation.watchPosition(onPosition, onError, {
-      enableHighAccuracy: true, maximumAge: 0, timeout: 15000
-    });
-  }
-
-  function stopTrip() {
-    if (!isTracking) return;
-    isTracking = false;
-    if (watchId !== null) {
-      navigator.geolocation.clearWatch(watchId);
-      watchId = null;
-    }
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
-    document.getElementById('status').innerHTML = 'الحالة: متوقف ⏹️';
-    
-    if(tripLog.length > 0) {
-      let last = tripLog[tripLog.length - 1];
-      let finalTime = elapsedTime > 0 ? elapsedTime : 1;
-      let avgAll = (totalDist / 1000.0) / (finalTime / 3600.0);
-      
-      let summaryHTML = '• إجمالي المسافة: <b>' + totalDist.toFixed(1) + ' متر</b><br>' +
-                        '• الزمن الإجمالي: <b>' + formatTime(finalTime) + '</b><br>' +
-                        '• متوسط السرعة العام: <b>' + avgAll.toFixed(1) + ' كم/س</b><br>' +
-                        '• أعلى سرعة بالجولة: <b>' + topSpeedVal.toFixed(1) + ' كم/س</b>';
-      document.getElementById('summaryText').innerHTML = summaryHTML;
-      document.getElementById('toDist').value = Math.round(totalDist);
-      document.getElementById('reportSection').style.display = 'block';
-
-      let newTripItem = {
-        id: Date.now(),
-        name: "جولة " + new Date().toLocaleDateString() + " (" + tripStartTimeStr + ")",
-        dist: totalDist,
-        time: finalTime,
-        topSpeed: topSpeedVal,
-        avgSpeed: avgAll,
-        log: tripLog
-      };
-      savedTrips.unshift(newTripItem);
-      localStorage.setItem('horse_trips_history', JSON.stringify(savedTrips));
-      renderHistory();
-    } else {
-      document.getElementById('status').innerHTML = 'الحالة: لم يتم تسجيل نقاط GPS حقيقية';
-    }
-  }
-
-  function onPosition(position) {
-    if (!isTracking) return;
-    let lat = position.coords.latitude;
-    let lng = position.coords.longitude;
-    let accuracy = position.coords.accuracy || 999;
-    
-    document.getElementById('gpsAccuracy').innerText = 'دقة GPS: ' + Math.round(accuracy) + ' م' + (accuracy > 25 ? ' ⚠️ ضعيفة' : ' ✅ دقيقة');
-    
-    if (accuracy > 25) return;
-
-    let speed = position.coords.speed ? position.coords.speed * 3.6 : 0;
-
-    if (originLat === null) { 
-      originLat = lat; 
-      originLng = lng; 
-      document.getElementById('status').innerHTML = 'الحالة: جاري التسجيل (تم التقاط الموقع) 🟢';
-    }
-
-    let pointAdded = false;
-    if (tripLog.length === 0) {
-      totalDist = 0.0;
-      pointAdded = true;
-    } else {
-      let lastPoint = tripLog[tripLog.length - 1];
-      let stepDist = calculateDistance(lastPoint.lat, lastPoint.lng, lat, lng);
-      if (stepDist >= 1.0 && stepDist < 150) {
-        totalDist += stepDist;
-        pointAdded = true;
-      }
-    }
-
-    document.getElementById('currSpeed').innerText = speed.toFixed(1);
-    document.getElementById('totalDist').innerText = totalDist.toFixed(0) + ' م';
-
-    if (speed > topSpeedVal) {
-      topSpeedVal = speed;
-      document.getElementById('topSpeed').innerText = topSpeedVal.toFixed(1) + ' كم/س';
-    }
-
-    if (pointAdded) {
-      tripLog.push({dist: totalDist, time: elapsedTime, speed: speed, lat: lat, lng: lng});
-      drawPath(tripLog);
-    }
-
-    if (bleCharacteristic) {
-      let dataStr = `${lat},${lng},${speed.toFixed(1)}`;
-      let encoder = new TextEncoder();
-      bleCharacteristic.writeValue(encoder.encode(dataStr)).catch(err => console.log(err));
-    }
-  }
-
-  function calculateCustomSegment() {
-    let startTarget = parseFloat(document.getElementById('fromDist').value);
-    let endTarget = parseFloat(document.getElementById('toDist').value);
-    let segmentPoints = tripLog.filter(p => p.dist >= startTarget && p.dist <= endTarget);
-    
-    let resBox = document.getElementById('segmentResult');
-    resBox.style.display = 'block';
-
-    if (segmentPoints.length < 2) {
-      resBox.innerHTML = '⚠️ النطاق غير دقيق أو المسافة قصيرة جداً.';
-      return;
-    }
-
-    let pFirst = segmentPoints[0];
-    let pLast = segmentPoints[segmentPoints.length - 1];
-    let timeDiff = pLast.time - pFirst.time;
-    let distDiff = pLast.dist - pFirst.dist;
-    if (timeDiff <= 0) timeDiff = 1;
-    
-    let segmentAvgSpeed = (distDiff / 1000.0) / (timeDiff / 3600.0);
-    let maxSpeedInSegment = -1;
-    
-    segmentPoints.forEach(p => {
-      if (p.speed > maxSpeedInSegment) {
-        maxSpeedInSegment = p.speed;
-      }
-    });
-
-    resBox.innerHTML = `
-      🎯 <b>نتائج المقطع الجزئي (${startTarget} م ⟵ ${endTarget} م):</b><br>
-      • مسافة المقطع: <b>${distDiff.toFixed(1)} متر</b><br>
-      ⏱️ الزمن: <b>${formatTime(timeDiff)}</b><br>
-      🚀 متوسط السرعة: <b style="color:#12b886;">${segmentAvgSpeed.toFixed(1)} كم/س</b><br>
-      ⚡ أقصى سرعة بالمقطع: <b style="color:#e64980;">${maxSpeedInSegment.toFixed(1)} كم/س</b>
-    `;
-  }
-
-  function saveCombinedReportImage() {
-    let exportCanvas = document.createElement('canvas');
-    exportCanvas.width = 800;
-    exportCanvas.height = 700;
-    let eCtx = exportCanvas.getContext('2d');
-
-    eCtx.fillStyle = '#ffffff';
-    eCtx.fillRect(0, 0, 800, 700);
-
-    eCtx.fillStyle = '#1a1a2e';
-    eCtx.font = 'bold 22px sans-serif';
-    eCtx.textAlign = 'right';
-    eCtx.fillText("🐎 تقرير جولة تتبع سرعة الخيل (فعلية)", 760, 45);
-
-    eCtx.drawImage(canvas, 40, 70, 720, 380);
-
-    eCtx.fillStyle = '#f8f6fc';
-    eCtx.fillRect(40, 470, 720, 200);
-    eCtx.strokeStyle = '#d8ccf8';
-    eCtx.strokeRect(40, 470, 720, 200);
-
-    eCtx.fillStyle = '#7048e8';
-    eCtx.font = 'bold 16px sans-serif';
-    eCtx.textAlign = 'right';
-    eCtx.fillText("📊 ملخص البيانات والنتائج:", 720, 505);
-
-    eCtx.fillStyle = '#212529';
-    eCtx.font = '14px sans-serif';
-    
-    let summaryHTMLText = document.getElementById('summaryText').innerText;
-    let lines = summaryHTMLText.split('\n');
-    let startY = 535;
-    lines.forEach(line => {
-      eCtx.fillText(line, 720, startY);
-      startY += 25;
-    });
-
-    let link = document.createElement('a');
-    link.download = 'Horse_Trip_Real_Report.png';
-    link.href = exportCanvas.toDataURL('image/png');
-    link.click();
-  }
-
-  function renderHistory() {
-    let container = document.getElementById('historyContainer');
-    if (savedTrips.length === 0) {
-      container.innerHTML = '<p style="font-size: 12px; color: #a0aec0; text-align: center;">لا توجد جولات محفوظة بعد.</p>';
-      return;
-    }
-    
-    let html = '';
-    savedTrips.forEach((trip, index) => {
-      let avgAll = trip.avgSpeed || 0;
-      html += `
-        <div class="history-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <input type="text" class="history-title-input" id="tripName_${trip.id}" value="${trip.name}" onchange="updateTripName(${trip.id}, this.value)">
-            <div>
-              <button class="history-btn" onclick="loadTrip(${index})">عرض</button>
-              <button class="history-btn history-btn-del" onclick="deleteTrip(${trip.id})">حذف</button>
-            </div>
-          </div>
-          <div style="font-size: 11px; color: #4a5568; line-height: 1.6;">
-            • المسافة: <b>${trip.dist.toFixed(1)} م</b> | الزمن: <b>${formatTime(trip.time)}</b><br>
-            • أعلى سرعة: <b style="color:#e64980;">${trip.topSpeed.toFixed(1)} كم/س</b> | المتوسط: <b style="color:#4263eb;">${avgAll.toFixed(1)} كم/س</b>
-          </div>
-        </div>
-      `;
-    });
-    container.innerHTML = html;
-  }
-
-  function updateTripName(id, newName) {
-    let trip = savedTrips.find(t => t.id === id);
-    if (trip) {
-      trip.name = newName;
-      localStorage.setItem('horse_trips_history', JSON.stringify(savedTrips));
-    }
-  }
-
-  function loadTrip(index) {
-    let trip = savedTrips[index];
-    if (trip && trip.log) {
-      tripLog = trip.log;
-      topSpeedVal = trip.topSpeed;
-      totalDist = trip.dist;
-      drawPath(tripLog);
-      
-      let avgAll = trip.avgSpeed || 0;
-      let summaryHTML = '• اسم الجولة: <b>' + trip.name + '</b><br>' +
-                        '• إجمالي المسافة: <b>' + trip.dist.toFixed(1) + ' متر</b><br>' +
-                        '• الزمن الإجمالي: <b>' + formatTime(trip.time) + '</b><br>' +
-                        '• متوسط السرعة العام: <b>' + avgAll.toFixed(1) + ' كم/س</b><br>' +
-                        '• أعلى سرعة بالجولة: <b>' + trip.topSpeed.toFixed(1) + ' كم/س</b>';
-      document.getElementById('summaryText').innerHTML = summaryHTML;
-      document.getElementById('toDist').value = Math.round(trip.dist);
       document.getElementById('reportSection').style.display = 'block';
       window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
     }
