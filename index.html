@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تتبع سرعة الخيل</title>
+  <title>تتبع سرعة الخيلDr.S</title>
   <style>
     * { box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(180deg,#f5f7fa 0%,#eef1f5 100%); margin: 0; padding: 15px; text-align: center; color: #1a1a2e; }
@@ -49,7 +49,7 @@
 </head>
 <body>
 <div class="app-card">
-  <h1>🐎 تتبع سرعة الخيل</h1>
+  <h1>🐎 تتبع سرعة الخيلDr.s</h1>
   <div><span id="status">الحالة: غير متصل 🔌</span></div>
   <button class="btn btn-conn" onclick="connectBLE()">🔗 اتصال بالبلوتوث (ESP32)</button>
   
@@ -112,9 +112,9 @@
 <script>
   let bluetoothDevice, bleCharacteristic;
   let isTracking = false, tripLog = [];
-  let watchId = null;
+  let watchId = null, timerInterval = null;
   let originLat = null, originLng = null;
-  let totalDist = 0, topSpeedVal = 0, startTime = 0, tripStartTimeStr = "";
+  let totalDist = 0, topSpeedVal = 0, startTime = 0, elapsedTime = 0, tripStartTimeStr = "";
   let canvas = document.getElementById('pathCanvas');
   let ctx = canvas.getContext('2d');
   let renderedPoints = [];
@@ -265,7 +265,7 @@
   function startTrip() {
     if (!navigator.geolocation) { alert('الـ GPS غير مدعوم في متصفحك'); return; }
     isTracking = true;
-    tripLog = []; originLat = null; originLng = null; topSpeedVal = 0; totalDist = 0;
+    tripLog = []; originLat = null; originLng = null; topSpeedVal = 0; totalDist = 0; elapsedTime = 0;
     startTime = Date.now();
     let now = new Date();
     tripStartTimeStr = now.toLocaleTimeString();
@@ -275,7 +275,19 @@
     document.getElementById('segmentResult').style.display = 'none';
     document.getElementById('status').innerHTML = 'الحالة: بانتظار إشارة GPS الحقيقية... 🟢';
     document.getElementById('startTimeDisplay').innerText = 'وقت الانطلاق: ' + tripStartTimeStr;
+    document.getElementById('timeElapsed').innerText = "00:00";
     drawPath(tripLog);
+
+    // عداد ثوانٍ مستقل يتحدث كل ثانية بدقة
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (!isTracking) return;
+      elapsedTime++;
+      document.getElementById('timeElapsed').innerText = formatTime(elapsedTime);
+      
+      let avg = (elapsedTime > 0 && totalDist > 0) ? (totalDist/1000.0)/(elapsedTime/3600.0) : 0;
+      document.getElementById('avgSpeed').innerText = avg.toFixed(1) + ' كم/س';
+    }, 1000);
 
     watchId = navigator.geolocation.watchPosition(onPosition, onError, {
       enableHighAccuracy: true, maximumAge: 0, timeout: 15000
@@ -289,25 +301,30 @@
       navigator.geolocation.clearWatch(watchId);
       watchId = null;
     }
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
     document.getElementById('status').innerHTML = 'الحالة: متوقف ⏹️';
     
     if(tripLog.length > 0) {
       let last = tripLog[tripLog.length - 1];
-      let avgAll = (last.time > 0 && last.dist > 0) ? (last.dist / 1000.0) / (last.time / 3600.0) : 0;
+      let finalTime = elapsedTime > 0 ? elapsedTime : 1;
+      let avgAll = (totalDist / 1000.0) / (finalTime / 3600.0);
       
-      let summaryHTML = '• إجمالي المسافة: <b>' + last.dist.toFixed(1) + ' متر</b><br>' +
-                        '• الزمن الإجمالي: <b>' + formatTime(last.time) + '</b><br>' +
+      let summaryHTML = '• إجمالي المسافة: <b>' + totalDist.toFixed(1) + ' متر</b><br>' +
+                        '• الزمن الإجمالي: <b>' + formatTime(finalTime) + '</b><br>' +
                         '• متوسط السرعة العام: <b>' + avgAll.toFixed(1) + ' كم/س</b><br>' +
                         '• أعلى سرعة بالجولة: <b>' + topSpeedVal.toFixed(1) + ' كم/س</b>';
       document.getElementById('summaryText').innerHTML = summaryHTML;
-      document.getElementById('toDist').value = Math.round(last.dist);
+      document.getElementById('toDist').value = Math.round(totalDist);
       document.getElementById('reportSection').style.display = 'block';
 
       let newTripItem = {
         id: Date.now(),
         name: "جولة " + new Date().toLocaleDateString() + " (" + tripStartTimeStr + ")",
-        dist: last.dist,
-        time: last.time,
+        dist: totalDist,
+        time: finalTime,
         topSpeed: topSpeedVal,
         avgSpeed: avgAll,
         log: tripLog
@@ -351,19 +368,13 @@
       }
     }
 
-    let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-
     document.getElementById('currSpeed').innerText = speed.toFixed(1);
     document.getElementById('totalDist').innerText = totalDist.toFixed(0) + ' م';
-    document.getElementById('timeElapsed').innerText = formatTime(elapsedTime);
 
     if (speed > topSpeedVal) {
       topSpeedVal = speed;
       document.getElementById('topSpeed').innerText = topSpeedVal.toFixed(1) + ' كم/س';
     }
-
-    let avg = (elapsedTime > 0 && totalDist > 0) ? (totalDist/1000.0)/(elapsedTime/3600.0) : 0;
-    document.getElementById('avgSpeed').innerText = avg.toFixed(1) + ' كم/س';
 
     if (pointAdded) {
       tripLog.push({dist: totalDist, time: elapsedTime, speed: speed, lat: lat, lng: lng});
